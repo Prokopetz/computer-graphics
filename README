@@ -4,4 +4,3 @@ This project contains all the tasks and evalutions for computer graphics. The po
 ## How to build
 In VSCODE go to the file you want to build and press COMMAND+SHIFT+B.
 After the code is built, you can run ./app to run the app.
-
