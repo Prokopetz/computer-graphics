@@ -16,8 +16,9 @@
    {
     "type": "cppbuild",
     "label": "buildApp",
-    "command": "/usr/bin/clang++",
+    "command": "g++",
     "args": [
+    "*.cpp",
      "-std=c++17",
      "-fdiagnostics-color=always",
      "-Wall",
@@ -26,7 +27,6 @@
      "-L${workspaceFolder}/dependencies/library",
      "${workspaceFolder}/dependencies/library/libglfw.3.3.dylib",
      "${workspaceFolder}/dependencies/library/libGLEW.2.2.0.dylib",
-     "${file}",
      "-o",
      "${workspaceFolder}/app",
      "-framework",
@@ -39,7 +39,6 @@
      "CoreVideo",
      "-framework",
      "CoreFoundation",
-     "-Wno-deprecated"
     ],
     "options": {
      "cwd": "${fileDirname}"
