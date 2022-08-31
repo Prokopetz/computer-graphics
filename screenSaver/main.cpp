@@ -42,7 +42,7 @@ int main()
       0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,   // Bottom Right
       -0.5f, -0.5f, -0.0f, 0.0f, 0.0f, 1.0f, // Bottom Left
       0.0f, 0.5f, 0.0f, 0.0f, 0.5f, 0.5f     // Top
-  };                                         // 1 VBO e 1 VAO
+  };
 
   GLuint VBO, VAO;
   glGenVertexArrays(1, &VAO);
@@ -65,10 +65,10 @@ int main()
       "layout(location=0) in vec3 vp;"
       "layout(location=1) in vec3 vc;"
       "out vec3 color;"
-      "uniform mat4 transform;"
+      "uniform mat4 matrix;"
       "void main() {"
       "  color = vc;"
-      "  gl_Position = transform * vec4(vp, 1.0);"
+      "  gl_Position = matrix * vec4(vp, 1.0);"
       "}";
 
   const char *fragment_shader =
@@ -94,18 +94,60 @@ int main()
   glLinkProgram(program);
 
   glUseProgram(program);
-
+  float matrix[] = {
+      1.0f,
+      0.0f,
+      0.0f,
+      0.0f,
+      0.0f,
+      1.0f,
+      0.0f,
+      0.0f,
+      0.0f,
+      0.0f,
+      1.0f,
+      0.0f,
+      0.25f,
+      0.25f,
+      0.0f,
+      1.0f};
+  float speedX = 0.5f;
+  float speedY = 0.3f;
+  float lastPositionX = 0.0f;
+  float lastPositionY = 0.0f;
   while (!glfwWindowShouldClose(window))
   {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f));
+    int matrixLocation = glGetUniformLocation(program, "matrix");
 
     glUseProgram(program);
-    unsigned int transformLoc = glGetUniformLocation(program, "transform");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+    glUniformMatrix4fv(matrixLocation, 1, GL_FALSE, matrix);
 
     glBindVertexArray(VAO);
+
+    static double previousSeconds = glfwGetTime();
+    double currentSeconds = glfwGetTime();
+    double elapsedSeconds = currentSeconds - previousSeconds;
+    if (elapsedSeconds > 0.008)
+    {
+      previousSeconds = currentSeconds;
+      if (fabs(lastPositionX) + 0.5f >= 1.0f)
+      {
+        speedX = -speedX;
+      }
+      else if (fabs(lastPositionY) + 0.5f >= 1.0f)
+      {
+        speedY = -speedY;
+      }
+
+      matrix[12] = elapsedSeconds * speedX + lastPositionX;
+      matrix[13] = elapsedSeconds * speedY + lastPositionY;
+      lastPositionX = matrix[12];
+      lastPositionY = matrix[13];
+    }
+
+    glUniformMatrix4fv(matrixLocation, 1, GL_FALSE, matrix);
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
