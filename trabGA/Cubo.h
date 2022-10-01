@@ -11,18 +11,16 @@
 class Cubo
 {
 
-  private:
-    Face* createFace(int v0, int v1, int v2, int v3, int normal);
-    vector<glm::vec3 *> cubePositions;
-    Shader *shader;
+private:
+  Face *createFace(int v0, int v1, int v2, int v3, int normal);
+  Shader *shader;
 
-    Mesh *mesh;
+  Mesh *mesh;
 
-  public:
-    Cubo();
-    int init(GLFWwindow *window);
-    void run(GLFWwindow *window);
-
+public:
+  Cubo();
+  int init(GLFWwindow *window);
+  void run(GLFWwindow *window);
 };
 
 #endif

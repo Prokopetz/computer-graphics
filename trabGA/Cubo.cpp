@@ -46,17 +46,6 @@ int Cubo::init(GLFWwindow *window)
   this->shader = new Shader("./trabGA/vertex.shader", "./trabGA/fragment.shader");
   this->shader->use();
 
-  this->cubePositions.push_back(new glm::vec3(0.0f, 0.0f, 0.0f));
-  this->cubePositions.push_back(new glm::vec3(2.0f, 5.0f, -15.0f));
-  this->cubePositions.push_back(new glm::vec3(-1.5f, -2.2f, -2.5f));
-  this->cubePositions.push_back(new glm::vec3(-3.8f, -2.0f, -12.3f));
-  this->cubePositions.push_back(new glm::vec3(2.4f, -0.4f, -3.5f));
-  this->cubePositions.push_back(new glm::vec3(-1.7f, 3.0f, -7.5f));
-  this->cubePositions.push_back(new glm::vec3(1.3f, -2.0f, -2.5f));
-  this->cubePositions.push_back(new glm::vec3(1.5f, 2.0f, -2.5f));
-  this->cubePositions.push_back(new glm::vec3(1.5f, 0.2f, -1.5f));
-  this->cubePositions.push_back(new glm::vec3(-1.3f, 1.0f, -1.5f));
-
   for (Group *group : this->mesh->getGroups())
   {
     vector<float> vertices;
@@ -102,14 +91,14 @@ void Cubo::run(GLFWwindow *window)
   glm::mat4 projection(1.0f);
   glm::mat4 view(1.0f);
 
-  for (int i = 0; i < cubePositions.size(); i++)
+  for (int i = 0; i < mesh->getGroups().size(); i++)
   {
     glm::mat4 model(1.0f);
 
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
     // Camera matrix
     glm::mat4 view = glm::lookAt(
-        glm::vec3(2, 1, 1), // Camera is at (4,3,-3), in World Space
+        glm::vec3(4, 2, 1), // Camera is at (4,3,-3), in World Space
         glm::vec3(0, 0, 0),
         glm::vec3(0, 3, 0));
 
