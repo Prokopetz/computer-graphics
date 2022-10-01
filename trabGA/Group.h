@@ -6,7 +6,7 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <iostream>
-#include "../face/Face.h"
+#include "Face.h"
 #include "../../common/stb_image.h"
 
 using namespace std;

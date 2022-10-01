@@ -5,7 +5,7 @@
 #include <string>
 #include <glm/glm.hpp>
 #include <vector>
-#include "../group/Group.h"
+#include "Group.h"
 
 using namespace std;
 
