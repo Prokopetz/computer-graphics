@@ -29,6 +29,6 @@ public:
     glDeleteProgram(this->program);
   }
 
-  void setMatrix4fv(const std::string &name, glm::mat4 &matrix);
+  void setMatrix4fv(const std::string &name, glm::mat4 matrix);
   void setVec3(const std::string &name, glm::vec3 &vec3);
 };

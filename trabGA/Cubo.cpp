@@ -1,9 +1,8 @@
 #include "Cubo.h"
 
+Cubo::Cubo() {}
 
-Cubo::Cubo() { }
-
-Face* Cubo::createFace(int v0, int v1, int v2, int v3, int normal)
+Face *Cubo::createFace(int v0, int v1, int v2, int v3, int normal)
 {
   Face *face = new Face();
   face->addVerticeId(v0);
@@ -105,11 +104,18 @@ void Cubo::run(GLFWwindow *window)
 
   for (int i = 0; i < cubePositions.size(); i++)
   {
-    glm::vec3 cubePosition = *cubePositions[i];
     glm::mat4 model(1.0f);
-    model = glm::translate(model, cubePosition);
-    float angle = 20.0f * (i + 1);
-    model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+    // Camera matrix
+    glm::mat4 view = glm::lookAt(
+        glm::vec3(2, 1, 1), // Camera is at (4,3,-3), in World Space
+        glm::vec3(0, 0, 0),
+        glm::vec3(0, 3, 0));
+
+    shader->setMatrix4fv("projection", projection);
+    shader->setMatrix4fv("view", view);
+    shader->setMatrix4fv("model", model);
 
     shader->use();
     for (Group *group : this->mesh->getGroups())
