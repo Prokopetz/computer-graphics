@@ -12,21 +12,30 @@
 #include <sstream>
 #include <iostream>
 
+#include "Object.h"
+#include "Camera.h"
+#include "Shader.h"
+
 class Scene
 {
-  
+
 private:
   GLint WIDTH, HEIGHT;
   std::string SCREEN_TITLE;
   GLuint program;
-  GLFWwindow* window;
+  GLFWwindow *window;
+  Camera *camera;
+  Shader *shader;
+  vector<Object *> objects = {};
 
 public:
   Scene(int width, int height, std::string title);
   int init();
   int run();
-  void addObject();
+  void addObject(Object *object);
 
+private:
+  void processInput();
 };
 
 #endif

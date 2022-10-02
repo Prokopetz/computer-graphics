@@ -7,20 +7,30 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "Face.h"
+#include "Object.h"
 
-class Cubo
+class Cubo : public Object
 {
 
 private:
   Face *createFace(int v0, int v1, int v2, int v3, int normal);
   Shader *shader;
-
-  Mesh *mesh;
+  Mesh *_mesh;
 
 public:
   Cubo();
-  int init(GLFWwindow *window);
-  void run(GLFWwindow *window);
+  glm::vec3 position = glm::vec3(1.0f);
+  Mesh *mesh() override
+  {
+    return this->_mesh;
+  };
+  int init();
+  void *draw() override;
+  glm::vec3 getPosition() override
+  {
+    return this->position;
+  };
+  void *setPosition(glm::vec3 position) override;
 };
 
 #endif
