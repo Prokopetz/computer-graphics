@@ -43,7 +43,7 @@ int Scene::init()
   }
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
@@ -58,13 +58,6 @@ int Scene::init()
   }
 
   glfwMakeContextCurrent(this->window);
-  glewExperimental = GL_TRUE;
-  glewInit();
-
-  glEnable(GL_DEPTH_TEST);
-  glClear(GL_DEPTH_BUFFER_BIT);
-
-  glewExperimental = GL_TRUE;
 
   if (glewInit() != GLEW_OK)
   {
@@ -72,7 +65,14 @@ int Scene::init()
     return EXIT_FAILURE;
   }
 
-  // glViewport(0, 0, this->WIDTH, this->HEIGHT);
+  glewExperimental = GL_TRUE;
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  // glEnable(GL_CULL_FACE);
+  // glCullFace(GL_BACK);
+  // glFrontFace(GL_CW);
+
 
   const GLubyte *renderer = glGetString(GL_RENDERER);
   const GLubyte *version = glGetString(GL_VERSION);
@@ -85,8 +85,6 @@ int Scene::init()
 
 int Scene::run()
 {
-  std::cout << "Camera " << std::endl;
-
   while (!glfwWindowShouldClose(this->window))
   {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -94,13 +92,10 @@ int Scene::run()
 
     for (Object *object : this->objects)
     {
-      std::cout << "Camera " << std::endl;
-
       this->camera->updateCamera();
       glm::mat4 model = glm::mat4(1.0f);
       model = glm::translate(model, object->getPosition());
       this->shader->setMatrix4fv("model", model);
-      std::cout << "Camera " << std::endl;
       object->draw();
     }
     glfwSwapBuffers(this->window);

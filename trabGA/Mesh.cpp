@@ -15,7 +15,7 @@ Mesh::~Mesh()
 
 glm::vec3 *Mesh::vertice(int id)
 {
-  return this->vertices[id];
+  return this->vertices[id - 1];
 }
 
 glm::vec3 *Mesh::normal(int id)

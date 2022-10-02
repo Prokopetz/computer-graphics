@@ -43,15 +43,12 @@ Mesh *ObjectReader::read(string filename)
 
   ifstream arq(filename);
 
-  // cout << "Lendo arquivo: " << filename << endl;
-
   if (!arq)
   {
-    // cout << "- Arquivo de objeto nao encontrado" << endl;
+    if( this->_debug ) cout << "ERRO - Arquivo de objeto nao encontrado" << endl;
+    
     exit(EXIT_FAILURE);
   }
-
-  // cout << endl;
 
   while (!arq.eof())
   {
@@ -60,7 +57,6 @@ Mesh *ObjectReader::read(string filename)
 
     stringstream sline(line);
 
-    // l� tipo de elemento
     string temp;
     sline >> temp;
 
@@ -69,8 +65,9 @@ Mesh *ObjectReader::read(string filename)
       continue;
     }
 
-    // cout << "Linha lida: " << line << endl;
-    // cout << "- Tipo: " << temp << endl;
+    if( this->_debug ) {
+      cout << "Linha lida..." << endl;
+    }
 
     // if (temp == "mtllib")
     // {
@@ -78,6 +75,9 @@ Mesh *ObjectReader::read(string filename)
     // }
     if (temp == "v")
     {
+      if( this->_debug ) {
+        cout << "Cria vertice: " << sline.str() << endl;
+      }
       vertice(sline);
     }
     // if (temp == "vn")
@@ -90,6 +90,9 @@ Mesh *ObjectReader::read(string filename)
     // }
     if (temp == "f")
     {
+      if( this->_debug ) {
+        cout << "Cria face: " << sline.str() << endl;
+      }
       Face *face = createFace(sline);
       this->group->addFace(face);
     }
@@ -97,10 +100,12 @@ Mesh *ObjectReader::read(string filename)
     {
       if (firstGroup == 1)
       {
+        cout << "Ignora primeiro grupo..." << endl;
         firstGroup = 0;
       }
       else
       {
+        cout << "Cria grupo: " << sline.str() << endl;
         mesh->addGroup(this->group);
         this->group = new Group();
       }
@@ -117,7 +122,6 @@ Mesh *ObjectReader::read(string filename)
   }
 
   arq.close();
-  std::cout << "ERROR GROUP" << endl;
 
   this->mesh->addGroup(this->group);
   return this->mesh;
@@ -127,6 +131,5 @@ void ObjectReader::vertice(stringstream &sline)
 {
   float x, y, z;
   sline >> x >> y >> z;
-  std::cout << " " << x << " " << y << " " << z << std::endl;
   mesh->addVertice(new glm::vec3(x, y, z));
 }

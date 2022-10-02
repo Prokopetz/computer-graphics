@@ -70,8 +70,6 @@ Cubo::Cubo()
 
     group->setVAO(VAO);
   }
-
-  glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 }
 
 void *Cubo::draw()

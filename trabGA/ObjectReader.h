@@ -11,6 +11,9 @@
 
 class ObjectReader
 {
+private: 
+  bool _debug = false;
+
 public:
   Mesh *mesh;
   Group *group;

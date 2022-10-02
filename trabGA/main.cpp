@@ -23,13 +23,11 @@ int main()
   // scene->addObject(cubo);
 
   // Cubo *cubo2 = new Cubo();
-  // cubo2->setPosition(glm::vec3(-3.0f, 2.0f, 5.0f));
   // scene->addObject(cubo2);
 
   ObjectReader *reader = new ObjectReader();
   CuboDois *cubo3 = new CuboDois(reader->read("./trabGA/pyramid.obj"));
-  std::cout << "Camera " << std::endl;
-
+  cubo3->setPosition(glm::vec3(0.8f, 1.2f, -1.0f));
   scene->addObject(cubo3);
 
   // scene.addObject("camera");

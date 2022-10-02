@@ -5,17 +5,14 @@ CuboDois::CuboDois(Mesh *mesh)
   this->_mesh = mesh;
   for (Group *group : this->_mesh->getGroups())
   {
-    std::cout << "SAI" << std::endl;
-
     vector<float> vertices;
 
     for (Face *face : group->getFaces())
     {
-      std::cout << "FACE" << std::endl;
 
+        cout << "Face" << face->getVertices().size() << endl;
       for (int verticeID : face->getVertices())
       {
-
         glm::vec3 *vertice = this->_mesh->vertice(verticeID);
         vertices.push_back(vertice->x);
         vertices.push_back(vertice->y);
@@ -30,8 +27,8 @@ CuboDois::CuboDois(Mesh *mesh)
     glGenBuffers(1, &VBOvert);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBOvert);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices.front(), GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0 , NULL);
 
     glEnableVertexAttribArray(0);
 
