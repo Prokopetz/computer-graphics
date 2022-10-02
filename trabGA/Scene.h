@@ -20,7 +20,6 @@ private:
   std::string SCREEN_TITLE;
   GLuint program;
   GLFWwindow* window;
-  bool isRunning;
 
 public:
   Scene(int width, int height, std::string title);

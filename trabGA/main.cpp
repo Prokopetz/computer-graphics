@@ -5,7 +5,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <stdio.h>
 
-#include "Shader.h"
 #include "Scene.h"
 
 int main()
@@ -16,7 +15,6 @@ int main()
 
   scene->init();
   // scene.addObject("camera");
-  scene->run();
+  return scene->run();
   
-  return 0;
 }
