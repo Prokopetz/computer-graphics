@@ -85,6 +85,8 @@ int Scene::init()
 
 int Scene::run()
 {
+  std::cout << "Camera " << std::endl;
+
   while (!glfwWindowShouldClose(this->window))
   {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -92,10 +94,13 @@ int Scene::run()
 
     for (Object *object : this->objects)
     {
+      std::cout << "Camera " << std::endl;
+
       this->camera->updateCamera();
       glm::mat4 model = glm::mat4(1.0f);
       model = glm::translate(model, object->getPosition());
       this->shader->setMatrix4fv("model", model);
+      std::cout << "Camera " << std::endl;
       object->draw();
     }
     glfwSwapBuffers(this->window);

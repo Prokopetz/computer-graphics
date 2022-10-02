@@ -7,6 +7,8 @@
 
 #include "Scene.h"
 #include "Cubo.h"
+#include "CuboDois.h"
+#include "ObjectReader.h"
 
 int main()
 {
@@ -15,14 +17,20 @@ int main()
   Scene *scene = new Scene(800, 600, "Quake");
 
   scene->init();
-  scene->addObject(new Cubo());
-  Cubo *cubo = new Cubo();
-  cubo->setPosition(glm::vec3(3.0f, 1.0f, 1.0f));
-  scene->addObject(cubo);
+  // scene->addObject(new Cubo());
+  // Cubo *cubo = new Cubo();
+  // cubo->setPosition(glm::vec3(3.0f, 1.0f, 1.0f));
+  // scene->addObject(cubo);
 
-  Cubo *cubo2 = new Cubo();
-  cubo2->setPosition(glm::vec3(-3.0f, 2.0f, 5.0f));
-  scene->addObject(cubo2);
+  // Cubo *cubo2 = new Cubo();
+  // cubo2->setPosition(glm::vec3(-3.0f, 2.0f, 5.0f));
+  // scene->addObject(cubo2);
+
+  ObjectReader *reader = new ObjectReader();
+  CuboDois *cubo3 = new CuboDois(reader->read("./trabGA/pyramid.obj"));
+  std::cout << "Camera " << std::endl;
+
+  scene->addObject(cubo3);
 
   // scene.addObject("camera");
   return scene->run();
