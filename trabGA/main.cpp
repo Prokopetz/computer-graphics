@@ -26,7 +26,7 @@ int main()
   // scene->addObject(cubo2);
 
   ObjectReader *reader = new ObjectReader();
-  CuboDois *cubo3 = new CuboDois(reader->read("./trabGA/pyramid.obj"));
+  CuboDois *cubo3 = new CuboDois(reader->read("./trabGA/trout.obj"));
   cubo3->setPosition(glm::vec3(0.8f, 1.2f, -1.0f));
   scene->addObject(cubo3);
 

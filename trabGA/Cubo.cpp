@@ -50,8 +50,6 @@ Cubo::Cubo()
         vertices.push_back(vertice->x);
         vertices.push_back(vertice->y);
         vertices.push_back(vertice->z);
-
-        group->numVertices();
       }
     }
 
@@ -79,7 +77,7 @@ void *Cubo::draw()
     for (Group *group : this->_mesh->getGroups())
     {
       glBindVertexArray(group->getVAO());
-      glDrawArrays(GL_TRIANGLES, 0, group->numVertices());
+      glDrawArrays(GL_TRIANGLES, 0, group->getNumVertices());
     }
   }
 }

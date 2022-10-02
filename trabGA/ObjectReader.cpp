@@ -45,8 +45,9 @@ Mesh *ObjectReader::read(string filename)
 
   if (!arq)
   {
-    if( this->_debug ) cout << "ERRO - Arquivo de objeto nao encontrado" << endl;
-    
+    if (this->_debug)
+      cout << "ERRO - Arquivo de objeto nao encontrado" << endl;
+
     exit(EXIT_FAILURE);
   }
 
@@ -65,7 +66,8 @@ Mesh *ObjectReader::read(string filename)
       continue;
     }
 
-    if( this->_debug ) {
+    if (this->_debug)
+    {
       cout << "Linha lida..." << endl;
     }
 
@@ -75,7 +77,8 @@ Mesh *ObjectReader::read(string filename)
     // }
     if (temp == "v")
     {
-      if( this->_debug ) {
+      if (this->_debug)
+      {
         cout << "Cria vertice: " << sline.str() << endl;
       }
       vertice(sline);
@@ -90,11 +93,13 @@ Mesh *ObjectReader::read(string filename)
     // }
     if (temp == "f")
     {
-      if( this->_debug ) {
+      if (this->_debug)
+      {
         cout << "Cria face: " << sline.str() << endl;
       }
       Face *face = createFace(sline);
       this->group->addFace(face);
+      this->group->increaseNumVertices(face->getVertices().size());
     }
     if (temp == "g")
     {

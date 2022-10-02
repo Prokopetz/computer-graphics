@@ -130,7 +130,7 @@ void Mesh::prepare()
 
     group->bindVAO();
     group->bindBuffer(vertices);
-    group->bindBuffer(normais);
+    // group->bindBuffer(normais);
     // group->bindBuffer(textures, 2);
 
     // if (group->getMaterialName() != "")

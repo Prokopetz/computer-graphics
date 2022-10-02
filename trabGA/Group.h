@@ -22,12 +22,20 @@ private:
   GLuint vao;
   // GLuint texture = NULL;
   int shaderLocation = 0;
+  int numVertices = 0;
 
 public:
   Group();
   ~Group();
 
-  int numVertices();
+  int getNumVertices()
+  {
+    return this->numVertices;
+  };
+  int increaseNumVertices(int count)
+  {
+    this->numVertices += count;
+  };
 
   void bindVAO();
   // void bindTexture();

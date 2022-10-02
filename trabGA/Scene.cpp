@@ -73,7 +73,6 @@ int Scene::init()
   // glCullFace(GL_BACK);
   // glFrontFace(GL_CW);
 
-
   const GLubyte *renderer = glGetString(GL_RENDERER);
   const GLubyte *version = glGetString(GL_VERSION);
 

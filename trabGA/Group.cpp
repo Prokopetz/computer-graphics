@@ -19,11 +19,6 @@ Group::~Group()
   this->vbos.shrink_to_fit();
 }
 
-int Group::numVertices()
-{
-  return faces.size() * Face::VERTICES;
-}
-
 void Group::bindVAO()
 {
   if (this->vao == NULL)
@@ -58,7 +53,7 @@ void Group::bindBuffer(const vector<float> &data, const int vecSize)
   GLuint vbo;
   glGenBuffers(1, &vbo);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data.front(), GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), data.data(), GL_STATIC_DRAW);
 
   glVertexAttribPointer(shaderLocation, vecSize, GL_FLOAT, GL_FALSE, 0, nullptr);
   glEnableVertexAttribArray(shaderLocation);
