@@ -34,6 +34,13 @@ Face *createFace(stringstream &sline)
   return face;
 }
 
+glm::vec2 texture(stringstream &sline)
+{
+  float x, y;
+  sline >> x >> y;
+  return glm::vec2(x, y);
+}
+
 glm::vec3 vertice(stringstream &sline)
 {
   float x, y, z;
@@ -46,6 +53,7 @@ Mesh *ObjectReader::read(string filename)
 
   vector<Face *> faces;
   vector<glm::vec3> vertices;
+  vector<glm::vec2> texCoords;
 
   ifstream arq(filename);
 
@@ -93,10 +101,10 @@ Mesh *ObjectReader::read(string filename)
     // {
     //   normal(mesh, sline);
     // }
-    // if (temp == "vt")
-    // {
-    //   texture(mesh, sline);
-    // }
+    if (temp == "vt")
+    {
+      texCoords.push_back(texture(sline));
+    }
     if (temp == "f")
     {
       if (this->_debug)
