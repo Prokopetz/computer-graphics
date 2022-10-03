@@ -87,7 +87,7 @@ Mesh *ObjectReader::read(string filename)
       {
         cout << "Cria vertice: " << sline.str() << endl;
       }
-      vertice(sline);
+      vertices.push_back(vertice(sline));
     }
     // if (temp == "vn")
     // {
