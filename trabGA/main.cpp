@@ -1,3 +1,5 @@
+#define STB_IMAGE_IMPLEMENTATION
+
 #include <GL/glew.h>    // include GLEW and new version of GL on Windows
 #include <GLFW/glfw3.h> // GLFW helper library
 #include <glm/glm.hpp>
@@ -9,6 +11,7 @@
 #include "CuboDois.h"
 #include "ObjectReader.h"
 #include "Face.h"
+#include "stb_image.h"
 
 Face *createFace(int v1, int v2, int v3, int v4)
 {
@@ -62,9 +65,14 @@ int main()
 
   // Mesh *mesh = new Mesh(vertices, faces);
 
+  // CuboDois *cubo = new CuboDois(mesh);
+
   ObjectReader *reader = new ObjectReader();
-  CuboDois *cubo3 = new CuboDois(reader->read("./trabGA/pyramid.obj"));
-  cubo3->setPosition(glm::vec3(0.8f, 1.2f, -1.0f));
+  int width, height, nrChannels;
+  unsigned char *data = stbi_load("./trabGA/assets/mesa01.bmp", &width, &height, &nrChannels, 0);
+  CuboDois *cubo3 = new CuboDois(reader->read("./trabGA/assets/mesa01.obj", data));
+  cubo3->setPosition(glm::vec3(0.8f, -3.0f, -1.0f));
+  // scene->addObject(cubo);
   scene->addObject(cubo3);
 
   // scene.addObject("camera");
