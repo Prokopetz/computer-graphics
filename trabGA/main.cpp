@@ -70,7 +70,7 @@ int main()
   ObjectReader *reader = new ObjectReader();
   int width, height, nrChannels;
   unsigned char *data = stbi_load("./trabGA/assets/mesa01.bmp", &width, &height, &nrChannels, 0);
-  CuboDois *cubo3 = new CuboDois(reader->read("./trabGA/assets/mesa01.obj", data));
+  CuboDois *cubo3 = new CuboDois(reader->read("./trabGA/assets/mesa01.obj"));
   cubo3->setPosition(glm::vec3(0.8f, -3.0f, -1.0f));
   // scene->addObject(cubo);
   scene->addObject(cubo3);
