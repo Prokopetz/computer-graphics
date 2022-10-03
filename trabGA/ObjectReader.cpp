@@ -29,7 +29,7 @@ Face *createFace(stringstream &sline)
     // cout << "   - Textura: " << t << endl;
     // cout << "   - Normal:  " << n << endl;
 
-    face->addVerticeIndex(v);
+    face->addVerticeIndex(v - 1);
   }
   return face;
 }
