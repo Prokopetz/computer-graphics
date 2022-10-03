@@ -6,15 +6,17 @@
 
 #include "Mesh.h"
 #include "Object.h"
+#include "Texture.h"
 
 class CuboDois : public Object
 {
 
 private:
   Mesh *_mesh;
+  Texture *_texture;
 
 public:
-  CuboDois(Mesh *mesh);
+  CuboDois(Mesh *mesh, Texture *texture);
   glm::vec3 position = glm::vec3(1.0f);
   Mesh *mesh() override
   {

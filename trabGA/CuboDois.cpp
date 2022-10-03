@@ -1,8 +1,9 @@
 #include "CuboDois.h"
 
-CuboDois::CuboDois(Mesh *mesh)
+CuboDois::CuboDois(Mesh *mesh, Texture *texture )
 {
   this->_mesh = mesh;
+  this->_mesh->setTexture(texture);
 }
 
 void *CuboDois::draw()

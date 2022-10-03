@@ -9,9 +9,9 @@
 
 #include "Scene.h"
 #include "CuboDois.h"
+
 #include "ObjectReader.h"
 #include "Face.h"
-#include "stb_image.h"
 
 Face *createFace(int v1, int v2, int v3, int v4)
 {
@@ -31,7 +31,6 @@ int main()
   // start GL context and O/S window using the GLFW helper library
 
   Scene *scene = new Scene(800, 600, "Quake");
-
   scene->init();
   // scene->addObject(new Cubo());
   // Cubo *cubo = new Cubo();
@@ -66,11 +65,11 @@ int main()
   // Mesh *mesh = new Mesh(vertices, faces);
 
   // CuboDois *cubo = new CuboDois(mesh);
-
+  Texture *tex = new Texture();
+  tex->load("./trabGA/assets/mesa01.bmp", scene->shader->program);
   ObjectReader *reader = new ObjectReader();
-  int width, height, nrChannels;
-  unsigned char *data = stbi_load("./trabGA/assets/mesa01.bmp", &width, &height, &nrChannels, 0);
-  CuboDois *cubo3 = new CuboDois(reader->read("./trabGA/assets/mesa01.obj"));
+  // unsigned char *data = stbi_load("./trabGA/assets/mesa01.bmp", &width, &height, &nrChannels, 0);
+  CuboDois *cubo3 = new CuboDois(reader->read("./trabGA/assets/mesa01.obj"), tex);
   cubo3->setPosition(glm::vec3(0.8f, -3.0f, -1.0f));
   // scene->addObject(cubo);
   scene->addObject(cubo3);

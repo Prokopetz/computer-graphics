@@ -122,5 +122,5 @@ Mesh *ObjectReader::read(string filename)
 
   arq.close();
 
-  return new Mesh(vertices, faces);
+  return new Mesh(vertices, texCoords, faces);
 }

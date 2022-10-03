@@ -25,10 +25,10 @@ private:
   GLuint program;
   GLFWwindow *window;
   Camera *camera;
-  Shader *shader;
   vector<Object *> objects = {};
 
 public:
+  Shader *shader;
   Scene(int width, int height, std::string title);
   int init();
   int run();
