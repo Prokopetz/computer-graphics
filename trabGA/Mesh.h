@@ -1,51 +1,29 @@
+
 #ifndef MESH_H
 #define MESH_H
 
-#include <iostream>
-#include <string>
+#include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <GLFW/glfw3.h>
+
 #include <vector>
-#include "Group.h"
+
+#include "Face.h"
 
 using namespace std;
 
 class Mesh
 {
+public:
+  Mesh(vector<glm::vec3> vertices, vector<Face *> faces);
+  void draw();
+  void addVertex(glm::vec3 vertex);
 
 private:
-  string name;
-  // string materialsFile;
-  vector<Group *> groups;
-
-  vector<glm::vec3 *> vertices;
-  vector<glm::vec3 *> normais;
-  vector<glm::vec2 *> textures;
-
-  // MaterialHandler* materialsHandler;
-
-public:
-  Mesh() {}
-  Mesh(string name);
-  ~Mesh();
-
-  void prepare();
-
-  glm::vec3 *vertice(int id);
-  glm::vec3 *normal(int id);
-  glm::vec2 *texture(int id);
-
-  void setName(string name);
-  void setMaterialsFile(string materialsFile);
-  void setTextures(vector<glm::vec2 *> &textures);
-  // void setMaterialHandler(MaterialHandler* handler);
-
-  int addGroup(Group *group);
-  int addVertice(glm::vec3 *vertice);
-  int addNormal(glm::vec3 *normal);
-  int addTexture(glm::vec2 *texture);
-  // string getMaterialsFile();
-  // Material* getMaterial(string materialName);
-  vector<Group *> &getGroups();
+  GLuint VAO;
+  vector<glm::vec3> vertices;
+  vector<Face *> faces;
+  vector<int> indices;
 };
-
 #endif

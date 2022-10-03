@@ -29,17 +29,23 @@ Face *createFace(stringstream &sline)
     // cout << "   - Textura: " << t << endl;
     // cout << "   - Normal:  " << n << endl;
 
-    face->addVerticeId(v);
+    face->addVerticeIndex(v);
   }
   return face;
 }
 
+glm::vec3 vertice(stringstream &sline)
+{
+  float x, y, z;
+  sline >> x >> y >> z;
+  return glm::vec3(x, y, z);
+}
+
 Mesh *ObjectReader::read(string filename)
 {
-  this->mesh = new Mesh();
 
-  int firstGroup = 1;
-  this->group = new Group();
+  vector<Face *> faces;
+  vector<glm::vec3> vertices;
 
   ifstream arq(filename);
 
@@ -97,44 +103,16 @@ Mesh *ObjectReader::read(string filename)
       {
         cout << "Cria face: " << sline.str() << endl;
       }
-      Face *face = createFace(sline);
-      this->group->addFace(face);
-      this->group->increaseNumVertices(face->getVertices().size());
+      faces.push_back(createFace(sline));
     }
     if (temp == "g")
     {
-      if (firstGroup == 1)
-      {
-        cout << "Ignora primeiro grupo..." << endl;
-        firstGroup = 0;
-      }
-      else
-      {
-        cout << "Cria grupo: " << sline.str() << endl;
-        mesh->addGroup(this->group);
-        this->group = new Group();
-      }
-
       string name;
       sline >> name;
-      this->group->setName(name);
     }
-    // else if (temp == "usemtl")
-    // {
-    // }
-
-    // cout << endl;
   }
 
   arq.close();
 
-  this->mesh->addGroup(this->group);
-  return this->mesh;
-}
-
-void ObjectReader::vertice(stringstream &sline)
-{
-  float x, y, z;
-  sline >> x >> y >> z;
-  mesh->addVertice(new glm::vec3(x, y, z));
+  return new Mesh(vertices, faces);
 }

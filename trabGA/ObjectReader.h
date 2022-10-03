@@ -5,21 +5,19 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include <glm/glm.hpp>
 #include "Mesh.h"
+#include "Face.h"
 
 class ObjectReader
 {
-private: 
-  bool _debug = false;
+private:
+  bool _debug = true;
 
 public:
-  Mesh *mesh;
-  Group *group;
   Mesh *read(string filename);
-  void vertice(stringstream &sline);
-  void face(stringstream &sline);
 };
 
 #endif
