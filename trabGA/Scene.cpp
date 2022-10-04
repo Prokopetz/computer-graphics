@@ -25,6 +25,14 @@ void Scene::processInput()
   {
     this->camera->moveRight();
   }
+  if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+  {
+    this->camera->rotateRight();
+  }
+  if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+  {
+    this->camera->rotateLeft();
+  }
 }
 
 Scene::Scene(int width, int height, std::string title)
