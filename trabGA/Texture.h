@@ -9,6 +9,7 @@ class Texture
 private:
 	GLuint textureID;
 	GLint textureLocation;
+	GLint textureNum;
 
 public:
   void load(char* path, GLuint shaderProgram);

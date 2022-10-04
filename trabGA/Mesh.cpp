@@ -34,7 +34,6 @@ Mesh::Mesh(vector<glm::vec3> vertices, vector<glm::vec2> texCoords, vector<Face 
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*) 0);
   glEnableVertexAttribArray(1);
 
-
   glEnableVertexAttribArray(0);
   glBindVertexArray(0);
 }
@@ -46,6 +45,7 @@ void Mesh::draw()
   cout << indices.size() << endl;
   glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
+  glBindTexture( GL_TEXTURE_2D, 0 );
   glBindVertexArray(0);
 }
 

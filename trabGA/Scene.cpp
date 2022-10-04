@@ -102,9 +102,17 @@ int Scene::run()
     for (Object *object : this->objects)
     {
       this->shader->use();
-      glm::mat4 model = glm::mat4(1.0f);
-      model = glm::translate(model, object->getPosition());
-      this->shader->setMatrix4fv("model", model);
+
+      glm::mat4 trans = glm::mat4(1.0f);
+      trans = glm::rotate(trans, glm::radians(object->getRotationDegrees()), object->getRotation());
+      trans = glm::scale(trans, object->getScale());  
+      trans = glm::translate(trans, object->getPosition());
+      std::cout << object->getPosition().x << " " << object->getPosition().y << " "  << object->getPosition().z << " " << endl; 
+      std::cout << object->getRotation().x << " " << object->getRotation().y << " "  << object->getRotation().z << " " << endl; 
+      std::cout << object->getScale().x << " " << object->getScale().y << " "  << object->getScale().z << " " << endl; 
+      std::cout << object->getRotationDegrees() << endl; 
+      std::cout << endl; 
+      this->shader->setMatrix4fv("model", trans);
       object->draw();
     }
     
