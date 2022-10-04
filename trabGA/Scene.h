@@ -24,12 +24,14 @@ private:
   std::string SCREEN_TITLE;
   GLuint program;
   GLFWwindow *window;
-  Camera *camera;
   vector<Object *> objects = {};
+
+  bool checkCollision(Object *one, Object *two);
 
 public:
   Shader *shader;
   Scene(int width, int height, std::string title);
+  Camera *camera;
   int init();
   int run();
   void addObject(Object *object);

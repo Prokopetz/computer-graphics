@@ -22,6 +22,7 @@ public:
   glm::vec3 position = glm::vec3(0.0f);
   glm::vec3 rotation = glm::vec3(0.0, 1.0, 0.0);
   glm::vec3 scale = glm::vec3(1.0f);
+  glm::vec2 colliderSize =  glm::vec2(0.0f);
   
   Mesh *mesh() override
   {
@@ -49,6 +50,16 @@ public:
   {
     return this->rotationDegrees;
   };
+  
+  glm::vec2 getColliderSize() override
+  {
+    return this->colliderSize;
+  };
+
+  bool hasCollision() override
+  {
+    return false;
+  };
 
   void *setPosition(glm::vec3 position) override{
     this->position  =position;
@@ -70,6 +81,14 @@ public:
   {
     this->_mesh = mesh;
   };
+
+  void onCollision(Object* obj) override {
+
+  }
+
+  bool shouldRender() override {
+    return true;
+  }
 };
 
 #endif

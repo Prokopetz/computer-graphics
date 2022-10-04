@@ -10,20 +10,7 @@
 #include "Scene.h"
 #include "Backpack.h"
 #include "Ground.h"
-#include "Face.h"
-
-Face *createFace(int v1, int v2, int v3, int v4)
-{
-  Face *face = new Face();
-  face->addVerticeIndex(v1);
-  face->addVerticeIndex(v2);
-  face->addVerticeIndex(v3);
-
-  face->addVerticeIndex(v1);
-  face->addVerticeIndex(v4);
-  face->addVerticeIndex(v3);
-  return face;
-}
+#include "Player.h"
 
 int main()
 {
@@ -36,12 +23,15 @@ int main()
   Texture *backpackTexture = new Texture();
   backpackTexture->load("./trabGA/assets/backpack.jpg", scene->shader->program);
   
-  Backpack *backpack = new Backpack(backpackTexture);
   Ground *ground = new Ground(groundTexture);
+  Backpack *backpack = new Backpack(backpackTexture);
+
+  Player *player = new Player(scene->camera);
 
   backpack->setPosition(glm::vec3(0.0f, 2.2f, -10.5f));
   scene->addObject(backpack);
   scene->addObject(ground);
+  scene->addObject(player);
 
   // scene.addObject("camera");
   return scene->run();

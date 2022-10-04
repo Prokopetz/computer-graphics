@@ -1,28 +1,24 @@
-#ifndef BACKPACK_H
-#define BACKPACK_H
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Mesh.h"
 #include "Object.h"
+#include "Camera.h"
 #include "Texture.h"
-#include "ObjectReader.h"
 
-class Backpack : public Object
+class Player : public Object
 {
 
 private:
-  Mesh *_mesh;
-  Texture *_texture;
   float _scale = 1.0f;
-  int iterations = 1000;
+  Camera* _camera;
 
 public:
-  Backpack(Texture *texture);
+  Player(Camera* camera);
   float rotationDegrees = 0.0f;
-  bool _shouldRender = true;
-  bool _hasCollision = true;
   glm::vec3 position = glm::vec3(0.0f);
   glm::vec3 rotation = glm::vec3(0.0, 1.0, 0.0);
   glm::vec3 scale = glm::vec3(1.0f);
@@ -30,7 +26,7 @@ public:
 
   Mesh *mesh() override
   {
-    return this->_mesh;
+    return nullptr;
   };
   int init();
   void *draw() override;
@@ -62,11 +58,11 @@ public:
 
   bool hasCollision() override
   {
-    return _hasCollision;
+    return true;
   };
 
   void *setPosition(glm::vec3 position) override{
-    this->position  =position;
+    this->position = position;
   };
 
   void *setRotation(glm::vec3 rotation) override{
@@ -83,14 +79,15 @@ public:
 
   void setMesh(Mesh *mesh) override
   {
-    this->_mesh = mesh;
+    
   };
 
   void onCollision(Object* obj) override;
 
   bool shouldRender() override {
-    return this->_shouldRender;
-  };
+    return true;
+  }
+
 };
 
 #endif

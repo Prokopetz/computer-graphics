@@ -101,20 +101,35 @@ int Scene::run()
 
     for (Object *object : this->objects)
     {
-      this->shader->use();
+      if(object->shouldRender()) {
+        this->shader->use();
 
-      glm::mat4 trans = glm::mat4(1.0f);
-      trans = glm::rotate(trans, glm::radians(object->getRotationDegrees()), object->getRotation());
-      trans = glm::scale(trans, object->getScale());  
-      trans = glm::translate(trans, object->getPosition());
-      std::cout << object->getPosition().x << " " << object->getPosition().y << " "  << object->getPosition().z << " " << endl; 
-      std::cout << object->getRotation().x << " " << object->getRotation().y << " "  << object->getRotation().z << " " << endl; 
-      std::cout << object->getScale().x << " " << object->getScale().y << " "  << object->getScale().z << " " << endl; 
-      std::cout << object->getRotationDegrees() << endl; 
-      std::cout << endl; 
-      this->shader->setMatrix4fv("model", trans);
-      object->draw();
+        glm::mat4 trans = glm::mat4(1.0f);
+        trans = glm::rotate(trans, glm::radians(object->getRotationDegrees()), object->getRotation());
+        trans = glm::scale(trans, object->getScale());  
+        trans = glm::translate(trans, object->getPosition());
+        this->shader->setMatrix4fv("model", trans);
+        object->draw();
+      }
     }
+    
+    int pos = 1;
+    for (Object *obj1 : this->objects)
+    {
+      for (Object *obj2 : this->objects)
+      {
+        if(obj1 != obj2) 
+        {
+          if(obj1->hasCollision() && obj2->hasCollision()) {
+            if(this->checkCollision(obj1, obj2)) {
+              obj1->onCollision(obj2);
+              obj2->onCollision(obj1);
+            }
+          }
+        }
+      }
+    }
+
     
     glfwSwapBuffers(this->window);
     glfwPollEvents();
@@ -128,3 +143,13 @@ void Scene::addObject(Object *object)
 {
   this->objects.push_back(object);
 }
+
+
+bool Scene::checkCollision(Object *one, Object *two)
+{
+    bool collisionX = one->getPosition().x + one->getColliderSize().x >= two->getPosition().x &&
+        two->getPosition().x + two->getColliderSize().x >= one->getPosition().x;
+    bool collisionY = one->getPosition().z + one->getColliderSize().y >= two->getPosition().z &&
+        two->getPosition().z + two->getColliderSize().y >= one->getPosition().z;
+    return collisionX && collisionY;
+}  

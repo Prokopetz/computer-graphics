@@ -42,7 +42,6 @@ void Mesh::draw()
 {
   glBindTexture(GL_TEXTURE_2D, this->texture->getTextureId());
   glBindVertexArray(VAO);
-  cout << indices.size() << endl;
   glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
   glBindTexture( GL_TEXTURE_2D, 0 );
