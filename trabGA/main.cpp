@@ -11,6 +11,7 @@
 #include "Backpack.h"
 #include "Ground.h"
 #include "Player.h"
+#include "Bullet.h"
 
 int main()
 {
@@ -22,10 +23,12 @@ int main()
 
   Texture *backpackTexture = new Texture();
   backpackTexture->load("./trabGA/assets/backpack.jpg", scene->shader->program);
-  
+
+  Texture *bulletTexture = new Texture();
+  bulletTexture->load("./trabGA/assets/mesa01.bmp", scene->shader->program);
+
   Ground *ground = new Ground(groundTexture);
   Backpack *backpack = new Backpack(backpackTexture);
-
   Player *player = new Player(scene->camera);
 
   backpack->setPosition(glm::vec3(0.0f, 2.2f, -10.5f));

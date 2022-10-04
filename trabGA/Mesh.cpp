@@ -31,7 +31,7 @@ Mesh::Mesh(vector<glm::vec3> vertices, vector<glm::vec2> texCoords, vector<Face 
   glBindBuffer(GL_ARRAY_BUFFER, VBOtextures);
   glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(glm::vec2), texCoords.data(), GL_STATIC_DRAW);
 
-  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*) 0);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid *)0);
   glEnableVertexAttribArray(1);
 
   glEnableVertexAttribArray(0);
@@ -40,14 +40,17 @@ Mesh::Mesh(vector<glm::vec3> vertices, vector<glm::vec2> texCoords, vector<Face 
 
 void Mesh::draw()
 {
+
   glBindTexture(GL_TEXTURE_2D, this->texture->getTextureId());
+
   glBindVertexArray(VAO);
   glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
-  glBindTexture( GL_TEXTURE_2D, 0 );
+  glBindTexture(GL_TEXTURE_2D, 0);
   glBindVertexArray(0);
 }
 
-void Mesh::setTexture(Texture* texture) {
+void Mesh::setTexture(Texture *texture)
+{
   this->texture = texture;
 }

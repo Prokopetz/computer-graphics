@@ -15,6 +15,8 @@
 #include "Object.h"
 #include "Camera.h"
 #include "Shader.h"
+#include "Bullet.h"
+#include "BulletCreator.h"
 
 class Scene
 {
@@ -25,6 +27,7 @@ private:
   GLuint program;
   GLFWwindow *window;
   vector<Object *> objects = {};
+  BulletCreator *bulletCreator;
 
   bool checkCollision(Object *one, Object *two);
 
