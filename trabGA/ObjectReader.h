@@ -14,7 +14,7 @@
 class ObjectReader
 {
 private:
-  bool _debug = true;
+  bool _debug = false;
 
 public:
   Mesh *read(string filename);

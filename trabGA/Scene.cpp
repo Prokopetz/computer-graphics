@@ -71,7 +71,7 @@ int Scene::init()
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   // glEnable(GL_CULL_FACE);
   // glCullFace(GL_BACK);
-  // glFrontFace(GL_CW);
+  // glFrontFace(GL_CCW); 
 
   const GLubyte *renderer = glGetString(GL_RENDERER);
   const GLubyte *version = glGetString(GL_VERSION);
@@ -86,17 +86,20 @@ int Scene::run()
 {
   while (!glfwWindowShouldClose(this->window))
   {
+    // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     this->processInput();
+    this->camera->updateCamera();
 
     for (Object *object : this->objects)
     {
-      this->camera->updateCamera();
+      this->shader->use();
       glm::mat4 model = glm::mat4(1.0f);
       model = glm::translate(model, object->getPosition());
       this->shader->setMatrix4fv("model", model);
       object->draw();
     }
+    
     glfwSwapBuffers(this->window);
     glfwPollEvents();
   }

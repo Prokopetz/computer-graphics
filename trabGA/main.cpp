@@ -66,11 +66,11 @@ int main()
 
   // CuboDois *cubo = new CuboDois(mesh);
   Texture *tex = new Texture();
-  tex->load("./trabGA/assets/mesa01.bmp", scene->shader->program);
+  tex->load("./trabGA/assets/diffuse.jpg", scene->shader->program);
   ObjectReader *reader = new ObjectReader();
   // unsigned char *data = stbi_load("./trabGA/assets/mesa01.bmp", &width, &height, &nrChannels, 0);
-  CuboDois *cubo3 = new CuboDois(reader->read("./trabGA/assets/mesa01.obj"), tex);
-  cubo3->setPosition(glm::vec3(0.8f, -3.0f, -1.0f));
+  CuboDois *cubo3 = new CuboDois(reader->read("./trabGA/assets/backpack.obj"), tex);
+  cubo3->setPosition(glm::vec3(0.8f, 1.5f, -1.5f));
   // scene->addObject(cubo);
   scene->addObject(cubo3);
 
