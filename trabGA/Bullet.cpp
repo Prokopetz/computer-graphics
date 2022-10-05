@@ -13,6 +13,5 @@ Bullet::Bullet(Camera *camera, Texture *texture, Mesh *mesh)
 void *Bullet::draw()
 {
   this->setPosition(speed * cameraFront + this->position);
-  this->setRotation(glm::vec3(1.0, 0.0, -1.0) * cameraPosition);
   this->_mesh->draw();
 }

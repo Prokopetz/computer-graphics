@@ -21,7 +21,7 @@ public:
     this->bulletTexture = new Texture();
     this->bulletTexture->load("./trabGA/assets/iron.jpeg", program);
     ObjectReader *reader = new ObjectReader();
-    this->bulletMesh = reader->read("./trabGA/assets/bullet.obj");
+    this->bulletMesh = reader->read("./trabGA/assets/cubee.obj");
     this->camera = camera;
   }
   Bullet *createBullet()

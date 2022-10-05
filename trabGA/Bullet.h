@@ -21,14 +21,14 @@ private:
   glm::vec3 cameraFront;
   glm::vec3 cameraUp;
   glm::vec3 cameraPosition;
-  float speed = 2.0f;
+  float speed = 5.0f;
 
 public:
   Bullet(Texture *texture);
   Bullet(Camera *camera, Texture *texture, Mesh *mesh);
   float rotationDegrees = 90.0f;
   glm::vec3 position = glm::vec3(0.0f);
-  glm::vec3 rotation = glm::vec3(0.0, 0.0, 1.0);
+  glm::vec3 rotation = glm::vec3(0.0, 1.0, 0.0);
   glm::vec3 scale = glm::vec3(1.0f);
   glm::vec2 colliderSize = glm::vec2(1.0f);
 
