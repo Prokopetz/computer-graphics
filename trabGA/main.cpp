@@ -20,6 +20,9 @@ int main()
   Scene *scene = new Scene(800, 600, "Quake");
   scene->init();
 
+  Player *player = new Player(scene->camera);
+  scene->addPlayer(player);
+
   Texture *groundTexture = new Texture();
   groundTexture->load("./trabGA/assets/ground.jpg", scene->shader->program);
 
@@ -37,18 +40,30 @@ int main()
 
   Ground *ground = new Ground(groundTexture);
   Backpack *backpack = new Backpack(backpackTexture);
-  Player *player = new Player(scene->camera);
   Outdoor *outdoor = new Outdoor(outdoorTexture);
-  Enemy *enemy = new Enemy(enemyTexture);
+  Outdoor *outdoor2 = new Outdoor(outdoorTexture);
+
+  vector<glm::vec3> enemies = {
+    glm::vec3(3.0f, 0.0f, 5.0f),
+    glm::vec3(13.0f, 0.0f, 2.0f),
+    glm::vec3(24.0f, 0.0f, 12.0f),
+    glm::vec3(33.0f, 0.0f, -5.0f),
+    glm::vec3(23.0f, 0.0f, -15.0f),
+    glm::vec3(-38.0f, 0.0f, -58.0f),
+  };
+
+  for(glm::vec3 enemyCoord : enemies) {
+    Enemy *enemy = new Enemy(enemyTexture);
+    enemy->setPosition(enemyCoord);
+    scene->addObject(enemy);
+  }
 
   backpack->setPosition(glm::vec3(0.0f, 2.2f, -10.5f));
   outdoor->setPosition(glm::vec3(5.0f, 0.0f, -20.0f));
-  enemy->setPosition(glm::vec3(3.0f, 0.0f, 5.0f));
+  outdoor2->setPosition(glm::vec3(-30.0f, 0.0f, 20.0f));
   scene->addObject(backpack);
   scene->addObject(ground);
-  scene->addPlayer(player);
   scene->addObject(outdoor);
-  scene->addObject(enemy);
 
   // scene.addObject("camera");
   return scene->run();
