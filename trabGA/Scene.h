@@ -16,6 +16,7 @@
 #include "Camera.h"
 #include "Shader.h"
 #include "Bullet.h"
+#include "Player.h"
 #include "BulletCreator.h"
 
 class Scene
@@ -28,6 +29,7 @@ private:
   GLFWwindow *window;
   vector<Object *> objects = {};
   BulletCreator *bulletCreator;
+  Player* player;
 
   bool checkCollision(Object *one, Object *two);
 
@@ -38,6 +40,7 @@ public:
   int init();
   int run();
   void addObject(Object *object);
+  void addPlayer(Player *player);
 
 private:
   void processInput();

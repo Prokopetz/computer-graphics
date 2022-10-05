@@ -21,13 +21,7 @@ Face *createFace(stringstream &sline)
     stringstream stoken(token);
 
     int v = getNextTokenValue(stoken);
-    // int t = getNextTokenValue(stoken);
-    // int n = getNextTokenValue(stoken);
 
-    // cout << "  Resultado de " << token << ": " << endl;
-    // cout << "   - Vertice: " << v << endl;
-    // cout << "   - Textura: " << t << endl;
-    // cout << "   - Normal:  " << n << endl;
 
     face->addVerticeIndex(v - 1);
   }
@@ -85,10 +79,7 @@ Mesh *ObjectReader::read(string filename)
       cout << "Linha lida..." << endl;
     }
 
-    // if (temp == "mtllib")
-    // {
-    //   material(mesh, sline);
-    // }
+
     if (temp == "v")
     {
       if (this->_debug)
@@ -97,10 +88,7 @@ Mesh *ObjectReader::read(string filename)
       }
       vertices.push_back(vertice(sline));
     }
-    // if (temp == "vn")
-    // {
-    //   normal(mesh, sline);
-    // }
+
     if (temp == "vt")
     {
       texCoords.push_back(texture(sline));

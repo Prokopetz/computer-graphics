@@ -11,5 +11,9 @@ void *Player::draw()
 }
 
 void Player::onCollision(Object* obj) {
-
+  Backpack *backpack = dynamic_cast<Backpack *>(obj);
+  if (backpack)
+  {
+    this->bullets += 3;
+  }
 }

@@ -46,7 +46,7 @@ int main()
   enemy->setPosition(glm::vec3(3.0f, 0.0f, 5.0f));
   scene->addObject(backpack);
   scene->addObject(ground);
-  scene->addObject(player);
+  scene->addPlayer(player);
   scene->addObject(outdoor);
   scene->addObject(enemy);
 

@@ -38,12 +38,15 @@ void Scene::processInput()
   if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
   {
     double now = glfwGetTime();
-    if (now - lastTime >= 0.5)
-    {
-      std::cout << "New bullet" << std::endl;
-      objects.push_back(this->bulletCreator->createBullet());
-      std::cout << "added" << std::endl;
-      lastTime = now;
+    if(this->player->bullets > 0) {
+      if (now - lastTime >= 0.5)
+      {
+        std::cout << "New bullet" << std::endl;
+        objects.push_back(this->bulletCreator->createBullet());
+        std::cout << "added" << std::endl;
+        lastTime = now;
+        this->player->bullets -=1;
+      }
     }
   }
 }
@@ -90,9 +93,6 @@ int Scene::init()
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  // glEnable(GL_CULL_FACE);
-  // glCullFace(GL_BACK);
-  // glFrontFace(GL_CCW);
 
   const GLubyte *renderer = glGetString(GL_RENDERER);
   const GLubyte *version = glGetString(GL_VERSION);
@@ -158,6 +158,12 @@ int Scene::run()
 void Scene::addObject(Object *object)
 {
   this->objects.push_back(object);
+}
+
+void Scene::addPlayer(Player *player)
+{
+  this->objects.push_back(player);
+  this->player = player;
 }
 
 bool Scene::checkCollision(Object *one, Object *two)
