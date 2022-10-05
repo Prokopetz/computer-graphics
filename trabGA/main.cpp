@@ -30,10 +30,10 @@ int main()
   bulletTexture->load("./trabGA/assets/mesa01.bmp", scene->shader->program);
 
   Texture *outdoorTexture = new Texture();
-  outdoorTexture->load("./trabGA/assets/outdoor.jpg", scene->shader->program);
+  outdoorTexture->load("./trabGA/assets/iron.jpeg", scene->shader->program);
 
   Texture *enemyTexture = new Texture();
-  enemyTexture->load("./trabGA/assets/enemy.jpg", scene->shader->program);
+  enemyTexture->load("./trabGA/assets/enemy.jpeg", scene->shader->program);
 
   Ground *ground = new Ground(groundTexture);
   Backpack *backpack = new Backpack(backpackTexture);
