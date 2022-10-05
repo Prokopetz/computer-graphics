@@ -12,6 +12,8 @@
 #include "Ground.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "Outdoor.h"
+#include "Enemy.h"
 
 int main()
 {
@@ -27,14 +29,27 @@ int main()
   Texture *bulletTexture = new Texture();
   bulletTexture->load("./trabGA/assets/mesa01.bmp", scene->shader->program);
 
+  Texture *outdoorTexture = new Texture();
+  outdoorTexture->load("./trabGA/assets/outdoor.jpg", scene->shader->program);
+
+  Texture *enemyTexture = new Texture();
+  enemyTexture->load("./trabGA/assets/enemy.jpg", scene->shader->program);
+
   Ground *ground = new Ground(groundTexture);
   Backpack *backpack = new Backpack(backpackTexture);
   Player *player = new Player(scene->camera);
+  Outdoor *outdoor = new Outdoor(outdoorTexture);
+  Enemy *enemy = new Enemy(enemyTexture);
 
   backpack->setPosition(glm::vec3(0.0f, 2.2f, -10.5f));
+  outdoor->setPosition(glm::vec3(5.0f, 0.0f, -20.0f));
+  enemy->setPosition(glm::vec3(3.0f, 0.0f, 5.0f));
+  enemy->setScale(glm::vec3(2.0f));
   scene->addObject(backpack);
   scene->addObject(ground);
   scene->addObject(player);
+  scene->addObject(outdoor);
+  scene->addObject(enemy);
 
   // scene.addObject("camera");
   return scene->run();

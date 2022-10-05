@@ -113,9 +113,9 @@ int Scene::run()
         this->shader->use();
 
         glm::mat4 trans = glm::mat4(1.0f);
-        trans = glm::rotate(trans, glm::radians(object->getRotationDegrees()), object->getRotation());
         trans = glm::scale(trans, object->getScale());
         trans = glm::translate(trans, object->getPosition());
+        trans = glm::rotate(trans, glm::radians(object->getRotationDegrees()), object->getRotation());
         this->shader->setMatrix4fv("model", trans);
         object->draw();
       }

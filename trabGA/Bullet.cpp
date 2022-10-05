@@ -10,7 +10,6 @@ Bullet::Bullet(Camera *camera, Texture *texture, Mesh *mesh)
 
 void *Bullet::draw()
 {
-
-  this->setPosition(speed * cameraFront * (float)glfwGetTime() + this->position);
+  this->setPosition(speed * cameraFront + this->position);
   this->_mesh->draw();
 }

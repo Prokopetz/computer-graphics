@@ -19,14 +19,15 @@ public:
   BulletCreator(Camera *camera, int program)
   {
     this->bulletTexture = new Texture();
-    this->bulletTexture->load("./trabGA/assets/mesa01.bmp", program);
+    this->bulletTexture->load("./trabGA/assets/outdoor.jpg", program);
     ObjectReader *reader = new ObjectReader();
-    this->bulletMesh = reader->read("./trabGA/assets/mesa01.obj");
+    this->bulletMesh = reader->read("./trabGA/assets/bullet.obj");
     this->camera = camera;
   }
   Bullet *createBullet()
   {
-    return new Bullet(camera, bulletTexture, bulletMesh);
+    Bullet *bullet = new Bullet(camera, bulletTexture, bulletMesh);
+    return bullet;
   };
 };
 
