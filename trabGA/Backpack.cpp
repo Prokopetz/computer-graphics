@@ -1,10 +1,11 @@
 #include "Backpack.h"
+#include "Player.h"
 
-Backpack::Backpack(Texture* texture)
+Backpack::Backpack(Texture *texture)
 {
   ObjectReader *reader = new ObjectReader();
-  
-  Mesh* mesh = reader->read("./trabGA/assets/Backpack.obj");
+
+  Mesh *mesh = reader->read("./trabGA/assets/Backpack.obj");
 
   this->_mesh = mesh;
   this->_mesh->setTexture(texture);
@@ -12,13 +13,18 @@ Backpack::Backpack(Texture* texture)
 
 void *Backpack::draw()
 {
-  this->_scale = 2.25f - sin(glm::radians(glfwGetTime() * 200.0f))*0.05f; 
+  this->_scale = 2.25f - sin(glm::radians(glfwGetTime() * 200.0f)) * 0.05f;
 
   this->setPosition(glm::vec3(this->position.x, 1.0f + this->_scale, this->position.z));
   this->_mesh->draw();
 }
 
-void Backpack::onCollision(Object* obj) {
-  this->_shouldRender = false;
-  this->_hasCollision = false;
+void Backpack::onCollision(Object *obj)
+{
+  Player *player = dynamic_cast<Player *>(obj);
+  if (player)
+  {
+    this->_shouldRender = false;
+    this->_hasCollision = false;
+  }
 }

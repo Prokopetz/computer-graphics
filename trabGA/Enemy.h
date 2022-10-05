@@ -25,7 +25,7 @@ public:
   bool _hasCollision = true;
   glm::vec3 position = glm::vec3(0.0f);
   glm::vec3 rotation = glm::vec3(0.0, 1.0, 0.0);
-  glm::vec3 scale = glm::vec3(1.0f);
+  glm::vec3 scale = glm::vec3(0.75f);
   glm::vec2 colliderSize = glm::vec2(1.0f);
 
   Mesh *mesh() override

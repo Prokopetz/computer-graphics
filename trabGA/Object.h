@@ -16,7 +16,7 @@ public:
   virtual glm::vec2 getColliderSize() = 0;
   virtual bool hasCollision() = 0;
   virtual bool shouldRender() = 0;
-  virtual void onCollision(Object* object) = 0;
+  virtual void onCollision(Object *object) = 0;
   virtual float getRotationDegrees() = 0;
   virtual void setMesh(Mesh *mesh) = 0;
   virtual void *setPosition(glm::vec3 position) = 0;

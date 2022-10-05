@@ -31,7 +31,8 @@ void Camera::moveRight()
   cameraPosition += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 }
 
-void Camera::rotateRight() {
+void Camera::rotateRight()
+{
   yaw += 1.0f;
   glm::vec3 direction;
   direction.x = cos(glm::radians(yaw));
@@ -40,10 +41,11 @@ void Camera::rotateRight() {
   cameraFront = glm::normalize(direction);
 }
 
-void Camera::rotateLeft() {
+void Camera::rotateLeft()
+{
   yaw -= 1.0f;
   glm::vec3 direction;
-  direction.x = cos(glm::radians(yaw)); 
+  direction.x = cos(glm::radians(yaw));
   direction.y = 0.0f;
   direction.z = sin(glm::radians(yaw));
   cameraFront = glm::normalize(direction);

@@ -44,7 +44,6 @@ int main()
   backpack->setPosition(glm::vec3(0.0f, 2.2f, -10.5f));
   outdoor->setPosition(glm::vec3(5.0f, 0.0f, -20.0f));
   enemy->setPosition(glm::vec3(3.0f, 0.0f, 5.0f));
-  enemy->setScale(glm::vec3(2.0f));
   scene->addObject(backpack);
   scene->addObject(ground);
   scene->addObject(player);

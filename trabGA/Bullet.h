@@ -19,16 +19,18 @@ private:
   bool _shouldRender = true;
   bool _hasCollision = true;
   glm::vec3 cameraFront;
+  glm::vec3 cameraUp;
+  glm::vec3 cameraPosition;
   float speed = 2.0f;
 
 public:
   Bullet(Texture *texture);
   Bullet(Camera *camera, Texture *texture, Mesh *mesh);
-  float rotationDegrees = 0.0f;
+  float rotationDegrees = 90.0f;
   glm::vec3 position = glm::vec3(0.0f);
-  glm::vec3 rotation = glm::vec3(0.0, 1.0, 0.0);
+  glm::vec3 rotation = glm::vec3(0.0, 0.0, 1.0);
   glm::vec3 scale = glm::vec3(1.0f);
-  glm::vec2 colliderSize = glm::vec2(0.0f);
+  glm::vec2 colliderSize = glm::vec2(1.0f);
 
   Mesh *mesh() override
   {
@@ -64,7 +66,7 @@ public:
 
   bool hasCollision() override
   {
-    return false;
+    return _hasCollision;
   };
 
   void *setPosition(glm::vec3 position) override
@@ -100,7 +102,7 @@ public:
 
   bool shouldRender() override
   {
-    return true;
+    return this->_shouldRender;
   }
 };
 

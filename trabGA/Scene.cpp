@@ -7,6 +7,8 @@
 
 #include "Scene.h"
 
+double lastTime = 0;
+
 void Scene::processInput()
 {
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -35,9 +37,14 @@ void Scene::processInput()
   }
   if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
   {
-    std::cout << "New bullet" << std::endl;
-    objects.push_back(this->bulletCreator->createBullet());
-    std::cout << "added" << std::endl;
+    double now = glfwGetTime();
+    if (now - lastTime >= 0.5)
+    {
+      std::cout << "New bullet" << std::endl;
+      objects.push_back(this->bulletCreator->createBullet());
+      std::cout << "added" << std::endl;
+      lastTime = now;
+    }
   }
 }
 

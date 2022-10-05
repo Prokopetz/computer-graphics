@@ -1,4 +1,6 @@
 #include "Enemy.h"
+#include "Bullet.h"
+#include "Object.h"
 
 Enemy::Enemy(Texture *texture)
 {
@@ -17,6 +19,10 @@ void *Enemy::draw()
 
 void Enemy::onCollision(Object *obj)
 {
-  this->_shouldRender = false;
-  this->_hasCollision = false;
+  Bullet *bullet = dynamic_cast<Bullet *>(obj);
+  if (bullet)
+  {
+    this->_shouldRender = false;
+    this->_hasCollision = false;
+  }
 }
