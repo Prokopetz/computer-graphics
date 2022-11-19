@@ -12,12 +12,12 @@
 #include <sstream>
 #include <iostream>
 
-#include "Object.h"
-#include "Camera.h"
-#include "Shader.h"
-#include "Bullet.h"
-#include "Player.h"
-#include "BulletCreator.h"
+#include "models/Object.h"
+#include "objects/Camera.h"
+#include "models/Shader.h"
+#include "objects/Bullet.h"
+#include "objects/Player.h"
+#include "utils/BulletCreator.h"
 
 class Scene
 {

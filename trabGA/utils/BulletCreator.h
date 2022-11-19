@@ -4,9 +4,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Bullet.h"
+#include "../objects/Bullet.h"
+#include "../models/Texture.h"
 #include "ObjectReader.h"
-#include "Texture.h"
 
 class BulletCreator
 {

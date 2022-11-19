@@ -12,7 +12,7 @@
 #include <vector>
 #include <iostream>
 
-#include "Shader.h"
+#include "../models/Shader.h"
 
 using namespace std;
 

@@ -6,10 +6,10 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
 #include <glm/glm.hpp>
-#include "Mesh.h"
-#include "Face.h"
+
+#include "../models/Mesh.h"
+#include "../models/Face.h"
 
 class ObjectReader
 {

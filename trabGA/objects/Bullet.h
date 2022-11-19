@@ -4,10 +4,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Mesh.h"
-#include "Object.h"
-#include "Texture.h"
-#include "ObjectReader.h"
+#include "../models/Mesh.h"
+#include "../models/Object.h"
+#include "../models/Texture.h"
+#include "../utils/ObjectReader.h"
 #include "Camera.h"
 
 class Bullet : public Object

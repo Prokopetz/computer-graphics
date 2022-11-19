@@ -1,33 +1,29 @@
-#ifndef BACKPACK_H
-#define BACKPACK_H
+#ifndef GROUND_H
+#define GROUND_H
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Mesh.h"
-#include "Object.h"
-#include "Texture.h"
-#include "ObjectReader.h"
+#include "../models/Mesh.h"
+#include "../models/Object.h"
+#include "../models/Texture.h"
+#include "../utils/ObjectReader.h"
 
-class Backpack : public Object
+class Ground : public Object
 {
 
 private:
   Mesh *_mesh;
   Texture *_texture;
-  float _scale = 1.0f;
-  int iterations = 1000;
 
 public:
-  Backpack(Texture *texture);
+  Ground(Texture *texture);
   float rotationDegrees = 0.0f;
-  bool _shouldRender = true;
-  bool _hasCollision = true;
   glm::vec3 position = glm::vec3(0.0f);
   glm::vec3 rotation = glm::vec3(0.0, 1.0, 0.0);
   glm::vec3 scale = glm::vec3(1.0f);
-  glm::vec2 colliderSize = glm::vec2(1.0f);
-
+  glm::vec2 colliderSize =  glm::vec2(0.0f);
+  
   Mesh *mesh() override
   {
     return this->_mesh;
@@ -54,7 +50,7 @@ public:
   {
     return this->rotationDegrees;
   };
-
+  
   glm::vec2 getColliderSize() override
   {
     return this->colliderSize;
@@ -62,7 +58,7 @@ public:
 
   bool hasCollision() override
   {
-    return _hasCollision;
+    return false;
   };
 
   void *setPosition(glm::vec3 position) override{
@@ -86,11 +82,13 @@ public:
     this->_mesh = mesh;
   };
 
-  void onCollision(Object* obj) override;
+  void onCollision(Object* obj) override {
+
+  }
 
   bool shouldRender() override {
-    return this->_shouldRender;
-  };
+    return true;
+  }
 };
 
 #endif
