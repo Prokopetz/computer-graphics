@@ -1,12 +1,12 @@
 #include "NewGroup.h"
 
-Group::Group() {}
+NewGroup::NewGroup() {}
 
-Group::~Group() {
+NewGroup::~NewGroup() {
 	faces.clear();
 }
 
-int Group::addFace(Face* face) {
+int NewGroup::addFace(NewFace* face) {
 	faces.push_back(face);
 	return faces.size() - 1;
 }

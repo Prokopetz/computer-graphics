@@ -8,21 +8,21 @@
 
 using namespace std;
 
-class Group
+class NewGroup
 {
 private:
 	GLuint VAO;
 	int numVertices;
 	string name;
 	string material;
-	vector<Face*> faces;
+	vector<NewFace*> faces;
 
 public:
-	Group();
-	~Group();
-	int addFace(Face* face);
+	NewGroup();
+	~NewGroup();
+	int addFace(NewFace* face);
 
-	vector<Face*> getFaces() {
+	vector<NewFace*> getFaces() {
 		return faces;
 	}
 

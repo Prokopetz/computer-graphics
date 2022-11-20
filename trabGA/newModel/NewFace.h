@@ -6,7 +6,7 @@
 using namespace std;
 
 
-class Face
+class NewFace
 {
 private:
 	vector<int> vertices;
@@ -14,8 +14,8 @@ private:
 	vector<int> textures;
 
 public:
-	Face();
-	~Face();
+	NewFace();
+	~NewFace();
 	int addVertice(int v);
 	void push(int v, int n, int t);
 
