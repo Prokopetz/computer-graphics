@@ -37,7 +37,8 @@ const GLint WIDTH = 1920, HEIGHT = 1080;
 int main()
 {
 	GLFWwindow *window;
-	float yaw = 90;
+	int screenWidth, screenHeight;
+	float yaw = 90.0f;
 
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -48,6 +49,7 @@ int main()
 	glfwWindowHint(GLFW_SAMPLES, 4);
 
 	window = glfwCreateWindow(WIDTH, HEIGHT, "Trabalho Grau B", nullptr, nullptr);
+	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
 
 	if (window == nullptr)
 	{
@@ -72,6 +74,7 @@ int main()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glEnable(GL_DEPTH_TEST);
+	glViewport(0, 0, screenWidth, screenHeight);
 
 	Shader coreShader = Shader("./trabGA/shaders/vertex.shader", "./trabGA/shaders/fragment.shader");
 	coreShader.Use();
