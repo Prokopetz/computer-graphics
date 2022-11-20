@@ -26,11 +26,10 @@
 #include "newModel/NewFace.h"
 #include "utils/NewObjectReader.h"
 
-float yaw = -90.0f;
 float cameraSpeed = 0.1f;
 
 glm::vec3 cameraPosition = glm::vec3(0.0f, 3.0f, 0.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, 1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 const GLint WIDTH = 1920, HEIGHT = 1080;
@@ -38,6 +37,7 @@ const GLint WIDTH = 1920, HEIGHT = 1080;
 int main()
 {
 	GLFWwindow *window;
+	float yaw = 90;
 
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -67,8 +67,6 @@ int main()
 	{
 		return EXIT_FAILURE;
 	}
-
-	glViewport(0, 0, WIDTH, HEIGHT);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -195,6 +193,26 @@ int main()
 			cameraPosition -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 		}
 
+		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+		{
+			yaw += 1.0f;
+			glm::vec3 direction;
+			direction.x = cos(glm::radians(yaw));
+			direction.y = 0.0f;
+			direction.z = sin(glm::radians(yaw));
+			cameraFront = glm::normalize(direction);
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+		{
+			yaw -= 1.0f;
+			glm::vec3 direction;
+			direction.x = cos(glm::radians(yaw));
+			direction.y = 0.0f;
+			direction.z = sin(glm::radians(yaw));
+			cameraFront = glm::normalize(direction);
+		}
+
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -209,7 +227,7 @@ int main()
 		coreShader.setMatrix4fv("view", view);
 
 		coreShader.setVec3("lightColor", vec3(1.0f, 1.0f, 1.0f));
-		coreShader.setVec3("lightPos", vec3(0.0f, 100.0f, 0.0f));
+		coreShader.setVec3("lightPos", vec3(10.0f, 0.0f, 0.0f));
 		coreShader.setVec3("viewPos", vec3(camX, camY, camZ));
 
 		glm::mat4 model(1.0f);
