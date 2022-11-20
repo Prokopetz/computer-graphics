@@ -82,7 +82,7 @@ int main()
 	coreShader.setMatrix4fv("projection", proj);
 
 	vector<NewMesh*> meshs;
-	meshs.push_back(NewObjectReader::read("./trabGA/assets/trout/pista.obj"));
+	meshs.push_back(NewObjectReader::read("./trabGA/assets/mesa01.obj"));
 	// vector<vec3*> translatePoints;
 
 	for (NewMesh* mesh : meshs) {
@@ -172,54 +172,20 @@ int main()
 			glfwSetWindowShouldClose( window, GLFW_TRUE );
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-			float currentFrame = glfwGetTime();
-			deltaTime = currentFrame - lastFrame;
-			
-			if (deltaTime > 0.1f) {
-				lastFrame = currentFrame;
-				translatePoint = translatePoint - 1;
-			}
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-			float currentFrame = glfwGetTime();
-			deltaTime = currentFrame - lastFrame;
-
-			if (deltaTime > 0.1f) {
-				lastFrame = currentFrame;
-				translatePoint = translatePoint + 1;
-			}
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-			angle += 0.1f;
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-			angle -= 0.1f;
-		}
-
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-			camY += 0.1f;
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-			camY -= 0.1f;
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 			camX += 0.1f;
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
 			camX -= 0.1f;
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
-			camX = 1.0f;
-			camY = 0.5f;
-			camZ = 1.0f;
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+			angle += 1.0f;
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+			angle -= 1.0f;
 		}
 
 		glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
@@ -228,14 +194,14 @@ int main()
 		coreShader.Use();
 
 		glm::mat4 view(1.0f);
-		view = glm::lookAt(glm::vec3(camX, camY, camZ),
+		view = glm::lookAt(glm::vec3(camX, camY + 10.0f, camZ),
 			glm::vec3(0.0f, 0.0f, 0.0f),
 			glm::vec3(0.0f, 1.0f, 0.0f));
 
 		coreShader.setMatrix4fv("view", view);
 
 		coreShader.setVec3("lightColor", vec3(1.0f, 1.0f, 1.0f));
-		coreShader.setVec3("lightPos", vec3(-100.0f, 1.0f, 100.0f));
+		coreShader.setVec3("lightPos", vec3(0.0f, 100.0f, 0.0f));
 		coreShader.setVec3("viewPos", vec3(camX, camY, camZ));
 
 		// float translateX = translatePoints[translatePoint % translatePoints.size()]->x * -1;
