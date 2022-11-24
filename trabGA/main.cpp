@@ -83,6 +83,8 @@ int main()
 
 	vector<NewMesh *> meshs;
 	meshs.push_back(NewObjectReader::read("./trabGA/assets/mesa01.obj"));
+	meshs.push_back(NewObjectReader::read("./objects/pista.obj"));
+
 	// vector<vec3*> translatePoints;
 
 	for (NewMesh *mesh : meshs)
@@ -241,6 +243,7 @@ int main()
 		{
 			for (NewGroup *group : mesh->getGroups())
 			{
+
 				coreShader.UseTexture(group->getName());
 				glBindVertexArray(group->getVAO());
 				glDrawArrays(GL_TRIANGLES, 0, group->getNumVertices());
