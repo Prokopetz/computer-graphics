@@ -243,7 +243,6 @@ int main()
 		{
 			for (NewGroup *group : mesh->getGroups())
 			{
-
 				coreShader.UseTexture(group->getName());
 				glBindVertexArray(group->getVAO());
 				glDrawArrays(GL_TRIANGLES, 0, group->getNumVertices());

@@ -4,32 +4,34 @@
 
 #include "NewTexture.h"
 
-Texture::Texture() { }
+Texture::Texture() {}
 
-Texture::~Texture() { }
+Texture::~Texture() {}
 
-void Texture::Load(char* path, char* textureUniformName, GLuint shaderProgram, GLint textureNum )
+void Texture::Load(char *path, char *textureUniformName, GLuint shaderProgram, GLint textureNum)
 {
 	this->textureNum = textureNum;
 
-	glGenTextures( 1, &textureID );
-	glBindTexture( GL_TEXTURE_2D, textureID );
+	glGenTextures(1, &textureID);
 
-  textureLocation = glGetUniformLocation( shaderProgram, textureUniformName );
+	textureLocation = glGetUniformLocation(shaderProgram, textureUniformName);
+
+	glActiveTexture(GL_TEXTURE0 + this->textureNum);
+	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	int width, height, nrChannels;
-  unsigned char *data = stbi_load(path, &width, &height, &nrChannels, 0);
+	unsigned char *data = stbi_load(path, &width, &height, &nrChannels, 0);
 
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
-  stbi_image_free(data);
+	stbi_image_free(data);
 
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glUniform1i( textureLocation, this->textureNum );
+	glUniform1i(textureLocation, this->textureNum);
 
-	glBindTexture( GL_TEXTURE_2D, 0 );
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
