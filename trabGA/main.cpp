@@ -85,18 +85,19 @@ int main()
 	vector<NewObject *> objects;
 
 	coreShader.setVec4("fogColor", vec4(0.8f, 0.9f, 1.0f, 1.0f));
-	coreShader.setFloat("fogNear", 20.0f);
-	coreShader.setFloat("fogFar", 40.0f);
+	coreShader.setFloat("fogNear", 50.0f);
+	coreShader.setFloat("fogFar", 150.0f);
 
 
-	NewObject* ground = new NewObject("./trabGA/assets/ground.obj");
-	ground->setTranslate(glm::vec3(0.0f, -9.1f, 0.0f));
-	ground->setScale(glm::vec3(20.0f));
+	NewObject* ground = new NewObject("./trabGA/assets/ground/ground.obj");
+	ground->setTranslate(glm::vec3(-40.0f, -5.0f, -40.0f));
+	ground->setScale(glm::vec3(2.0f));
+	ground->setRotation(glm::vec3(0.0f, 1.0f, 0.0f));
+	ground->setRotationAngle(180.0f);
 	objects.push_back(ground);
 
-	objects.push_back(new NewObject("./objects/pista.obj"));
+	 objects.push_back(new NewObject("./objects/pista.obj"));
 	objects.push_back(new NewObject("./trabGA/assets/pokemon/Pikachu.obj"));
-	// vector<vec3*> translatePoints;
 
 	for (NewObject *object : objects)
 	{
@@ -241,7 +242,7 @@ int main()
 		coreShader.setMatrix4fv("view", view);
 
 		coreShader.setVec3("lightColor", vec3(1.0f, 1.0f, 1.0f));
-		coreShader.setVec3("lightPos", vec3(10.0f, 0.0f, 0.0f));
+		coreShader.setVec3("lightPos", vec3(10.0f, 10.0f, 0.0f));
 		coreShader.setVec3("viewPos", vec3(camX, camY, camZ));
 
 		for (NewObject *object : objects)
@@ -264,10 +265,6 @@ int main()
 
 		glfwSwapBuffers(window);
 	}
-
-	////////
-	////////
-	////////
 
 	return EXIT_SUCCESS;
 }
