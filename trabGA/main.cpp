@@ -24,6 +24,7 @@
 #include "newModel/NewMaterial.h"
 #include "newModel/NewGroup.h"
 #include "newModel/NewFace.h"
+#include "newModel/NewObject.h"
 #include "utils/NewObjectReader.h"
 
 float cameraSpeed = 0.1f;
@@ -81,18 +82,24 @@ int main()
 
 	glm::ortho(0.0f, (float)WIDTH, 0.0f, (float)HEIGHT, 0.1f, 100.0f);
 
-	vector<NewMesh *> meshs;
-	meshs.push_back(NewObjectReader::read("./trabGA/assets/mesa01.obj"));
-	meshs.push_back(NewObjectReader::read("./objects/pista.obj"));
-	meshs.push_back(NewObjectReader::read("./trabGA/assets/pokemon/Pikachu.obj"));
+	vector<NewObject *> objects;
+
+
+	NewObject* ground = new NewObject("./trabGA/assets/ground.obj");
+	ground->setTranslate(glm::vec3(0.0f, -9.1f, 0.0f));
+	ground->setScale(glm::vec3(20.0f));
+	objects.push_back(ground);
+
+	objects.push_back(new NewObject("./objects/pista.obj"));
+	objects.push_back(new NewObject("./trabGA/assets/pokemon/Pikachu.obj"));
 	// vector<vec3*> translatePoints;
 
-	for (NewMesh *mesh : meshs)
+	for (NewObject *object : objects)
 	{
-		for (NewGroup *group : mesh->getGroups())
+		for (NewGroup *group : object->getMesh()->getGroups())
 		{
 
-			NewMaterial *material = mesh->getMaterial(group->getMaterial());
+			NewMaterial *material = object->getMesh()->getMaterial(group->getMaterial());
 			coreShader.LoadTexture(strdup(material->getTexture().c_str()), "texture1", group->getName());
 			coreShader.setVec3("materialAmbient", vec3(material->getAmbient()->x, material->getAmbient()->y, material->getAmbient()->z));
 			coreShader.setVec3("materialDiffuse", vec3(material->getDiffuse()->x, material->getDiffuse()->y, material->getDiffuse()->z));
@@ -107,7 +114,7 @@ int main()
 			{
 				for (int verticeID : face->getVertices())
 				{
-					glm::vec3 *vertice = mesh->vertice(verticeID - 1);
+					glm::vec3 *vertice = object->getMesh()->vertice(verticeID - 1);
 					vertices.push_back(vertice->x);
 					vertices.push_back(vertice->y);
 					vertices.push_back(vertice->z);
@@ -117,7 +124,7 @@ int main()
 
 				for (int normalID : face->getNormais())
 				{
-					glm::vec3 *normal = mesh->normal(normalID - 1);
+					glm::vec3 *normal = object->getMesh()->normal(normalID - 1);
 					normais.push_back(normal->x);
 					normais.push_back(normal->y);
 					normais.push_back(normal->z);
@@ -125,7 +132,7 @@ int main()
 
 				for (int textureID : face->getTextures())
 				{
-					glm::vec2 *texture = mesh->texture(textureID - 1);
+					glm::vec2 *texture = object->getMesh()->texture(textureID - 1);
 					textures.push_back(texture->x);
 					textures.push_back(texture->y);
 				}
@@ -161,8 +168,6 @@ int main()
 			glBindVertexArray(0);
 		}
 	}
-
-	float angle = 135.0f;
 
 	float camX = 1.0f;
 	float camY = 0.5f;
@@ -235,15 +240,17 @@ int main()
 		coreShader.setVec3("lightPos", vec3(10.0f, 0.0f, 0.0f));
 		coreShader.setVec3("viewPos", vec3(camX, camY, camZ));
 
-		glm::mat4 model(1.0f);
-		model = glm::scale(model, glm::vec3(3.0f));
-		model = glm::rotate(model, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
-
-		coreShader.setMatrix4fv("model", model);
-		for (NewMesh *mesh : meshs)
+		for (NewObject *object : objects)
 		{
-			for (NewGroup *group : mesh->getGroups())
+			for (NewGroup *group : object->getMesh()->getGroups())
 			{
+				glm::mat4 model(1.0f);
+				model = glm::scale(model, object->getScale());
+				model = glm::rotate(model, glm::radians(object->getRotationAngle()), object->getRotation());
+				model = glm::translate(model, object->getTranslate());
+
+				coreShader.setMatrix4fv("model", model);
+
 				coreShader.UseTexture(group->getName());
 				glBindVertexArray(group->getVAO());
 				glDrawArrays(GL_TRIANGLES, 0, group->getNumVertices());
