@@ -32,6 +32,7 @@ float cameraSpeed = 0.1f;
 glm::vec3 cameraPosition = glm::vec3(0.0f, 3.0f, 0.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, 1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+double lastTime = 0;
 
 const GLint WIDTH = 1920, HEIGHT = 1080;
 
@@ -109,6 +110,15 @@ void createBuffersForObject(NewObject *object, Shader &shader)
 	}
 }
 
+bool checkCollision(NewObject *one, NewObject *two)
+{
+	bool collisionX = one->getTranslate().x + one->getColliderSize().x >= two->getTranslate().x &&
+										two->getTranslate().x + two->getColliderSize().x >= one->getTranslate().x;
+	bool collisionY = one->getTranslate().z + one->getColliderSize().y >= two->getTranslate().z &&
+										two->getTranslate().z + two->getColliderSize().y >= one->getTranslate().z;
+	return collisionX && collisionY;
+}
+
 int main()
 {
 	GLFWwindow *window;
@@ -170,7 +180,21 @@ int main()
 	objects.push_back(ground);
 
 	objects.push_back(new NewObject("./objects/pista.obj"));
-	// objects.push_back(new NewObject("./trabGA/assets/pokemon/Pikachu.obj"));
+	NewObject *pikachu = new NewObject("./trabGA/assets/pokemon/Pikachu.obj");
+	pikachu->setHasCollision(true);
+	objects.push_back(pikachu);
+	NewObject *pikachu1 = new NewObject("./trabGA/assets/pokemon/Pikachu.obj");
+	pikachu1->setHasCollision(true);
+	pikachu1->setTranslate(glm::vec3(-10.0f, 0.0f, -10.0f));
+	objects.push_back(pikachu1);
+	NewObject *pikachu2 = new NewObject("./trabGA/assets/pokemon/Pikachu.obj");
+	pikachu2->setHasCollision(true);
+	pikachu2->setTranslate(glm::vec3(-5.0f, 0.0f, 3.0f));
+	objects.push_back(pikachu2);
+	NewObject *pikachu3 = new NewObject("./trabGA/assets/pokemon/Pikachu.obj");
+	pikachu3->setHasCollision(true);
+	pikachu3->setTranslate(glm::vec3(5.0f, 0.0f, 2.0f));
+	objects.push_back(pikachu3);
 
 	for (NewObject *object : objects)
 	{
@@ -233,13 +257,22 @@ int main()
 
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
-			NewObject *bullet = new NewObject("./trabGA/assets/pokemon/Pikachu.obj");
-			bullet->setTranslate(cameraPosition);
-			bullet->setVelocity(0.1f);
-			bullet->setIsBullet(true);
-			bullet->setDirection(cameraFront);
-			objects.push_back(bullet);
-			createBuffersForObject(bullet, coreShader);
+
+			double now = glfwGetTime();
+
+			if (now - lastTime >= 0.5)
+			{
+				NewObject *bullet = new NewObject("./trabGA/assets/cube/cube.obj");
+
+				bullet->setTranslate(cameraPosition);
+				bullet->setVelocity(2.0f);
+				bullet->setIsBullet(true);
+				bullet->setHasCollision(true);
+				bullet->setDirection(cameraFront);
+				objects.push_back(bullet);
+				createBuffersForObject(bullet, coreShader);
+				lastTime = now;
+			}
 		}
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -261,6 +294,11 @@ int main()
 
 		for (NewObject *object : objects)
 		{
+			if (!object->getShouldRender())
+			{
+				continue;
+			}
+
 			for (NewGroup *group : object->getMesh()->getGroups())
 			{
 				glm::mat4 model(1.0f);
@@ -283,6 +321,25 @@ int main()
 				glBindVertexArray(group->getVAO());
 				glDrawArrays(GL_TRIANGLES, 0, group->getNumVertices());
 				glBindVertexArray(0);
+			}
+		}
+
+		int pos = 1;
+		for (NewObject *obj1 : objects)
+		{
+			for (NewObject *obj2 : objects)
+			{
+				if (obj1 != obj2)
+				{
+					if (obj1->getHasCollision() && obj2->getHasCollision())
+					{
+						if (checkCollision(obj1, obj2))
+						{
+							obj1->setShouldRender(false);
+							obj2->setShouldRender(false);
+						}
+					}
+				}
 			}
 		}
 

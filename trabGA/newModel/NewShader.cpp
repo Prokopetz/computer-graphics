@@ -9,10 +9,18 @@ void Shader::UseTexture(std::string textureName)
 
 void Shader::LoadTexture(char *path, char *textureUniformName, std::string textureName)
 {
-	Texture tempTexture;
-	tempTexture.Load(path, textureUniformName, program, textureQtd);
-	textures[textureName] = tempTexture;
-	textureQtd += 1;
+
+	try
+	{
+		Texture texture = textures.at(textureName);
+	}
+	catch (const std::out_of_range e)
+	{
+		Texture tempTexture;
+		tempTexture.Load(path, textureUniformName, program, textureQtd);
+		textures[textureName] = tempTexture;
+		textureQtd += 1;
+	}
 }
 
 void Shader::setMatrix4fv(const std::string &name, glm::mat4 &matrix)
