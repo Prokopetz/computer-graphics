@@ -84,6 +84,10 @@ int main()
 
 	vector<NewObject *> objects;
 
+	coreShader.setVec4("fogColor", vec4(0.8f, 0.9f, 1.0f, 1.0f));
+	coreShader.setFloat("fogNear", 20.0f);
+	coreShader.setFloat("fogFar", 40.0f);
+
 
 	NewObject* ground = new NewObject("./trabGA/assets/ground.obj");
 	ground->setTranslate(glm::vec3(0.0f, -9.1f, 0.0f));

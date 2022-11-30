@@ -7,6 +7,7 @@ layout (location = 2) in vec2 texCoord;
 out vec2 TexCoord;
 out vec3 Normal;
 out vec3 FragPos;
+out float FogDepth;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -21,4 +22,5 @@ void main()
 	TexCoord = vec2(texCoord.x, 1.0 - texCoord.y);
 	Normal = mat3(transpose(inverse(model))) * aNormal; 
 	FragPos = vec3(pos);
+	FogDepth = -(view * pos).z;
 }

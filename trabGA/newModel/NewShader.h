@@ -134,6 +134,7 @@ public:
 	}
 
 	void setMatrix4fv(const std::string& name, glm::mat4& matrix);
+	void setVec4(const std::string& name, glm::vec4 vec4);
 	void setVec3(const std::string& name, glm::vec3 vec3);
 	void setFloat(const std::string& name, float f);
 	
