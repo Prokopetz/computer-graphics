@@ -42,10 +42,6 @@ void createBuffersForObject(NewObject *object, Shader &shader)
 	{
 		NewMaterial *material = object->getMesh()->getMaterial(group->getMaterial());
 		shader.LoadTexture(strdup(material->getTexture().c_str()), "texture1", group->getName());
-		shader.setVec3("materialAmbient", vec3(material->getAmbient()->x, material->getAmbient()->y, material->getAmbient()->z));
-		shader.setVec3("materialDiffuse", vec3(material->getDiffuse()->x, material->getDiffuse()->y, material->getDiffuse()->z));
-		shader.setVec3("materialSpecular", vec3(material->getSpecular()->x, material->getSpecular()->y, material->getSpecular()->z));
-		shader.setFloat("materialShininess", material->getShininess());
 
 		vector<float> vertices;
 		vector<float> normais;
@@ -112,10 +108,10 @@ void createBuffersForObject(NewObject *object, Shader &shader)
 
 bool checkCollision(NewObject *one, NewObject *two)
 {
-	bool collisionX = one->getTranslate().x + one->getColliderSize().x >= two->getTranslate().x &&
-										two->getTranslate().x + two->getColliderSize().x >= one->getTranslate().x;
-	bool collisionY = one->getTranslate().z + one->getColliderSize().y >= two->getTranslate().z &&
-										two->getTranslate().z + two->getColliderSize().y >= one->getTranslate().z;
+	bool collisionX = one->getTranslate().x + one->getColliderSize().x * one->getScale().x >= two->getTranslate().x &&
+										two->getTranslate().x + two->getColliderSize().x * two->getScale().x >= one->getTranslate().x;
+	bool collisionY = one->getTranslate().z + one->getColliderSize().y * one->getScale().y >= two->getTranslate().z &&
+										two->getTranslate().z + two->getColliderSize().y * two->getScale().y >= one->getTranslate().z;
 	return collisionX && collisionY;
 }
 
@@ -173,13 +169,17 @@ int main()
 	coreShader.setFloat("fogFar", 150.0f);
 
 	NewObject *ground = new NewObject("./trabGA/assets/ground/ground.obj");
-	ground->setTranslate(glm::vec3(-40.0f, -5.0f, -40.0f));
+	ground->setTranslate(glm::vec3(-40.0f, 0.0f, -40.0f));
 	ground->setScale(glm::vec3(2.0f));
 	ground->setRotation(glm::vec3(0.0f, 1.0f, 0.0f));
 	ground->setRotationAngle(180.0f);
 	objects.push_back(ground);
 
-	objects.push_back(new NewObject("./objects/pista.obj"));
+	NewObject *pista = new NewObject("./objects/pista.obj");
+	pista->setTranslate(glm::vec3(0.0f, 0.1f, 0.0f));
+	pista->setScale(glm::vec3(2.0f));
+	objects.push_back(pista);
+
 	NewObject *pikachu = new NewObject("./trabGA/assets/pokemon/Pikachu.obj");
 	pikachu->setHasCollision(true);
 	objects.push_back(pikachu);
@@ -301,6 +301,12 @@ int main()
 
 			for (NewGroup *group : object->getMesh()->getGroups())
 			{
+				NewMaterial *material = object->getMesh()->getMaterial(group->getMaterial());
+				coreShader.setVec3("materialAmbient", vec3(material->getAmbient()->x, material->getAmbient()->y, material->getAmbient()->z));
+				coreShader.setVec3("materialDiffuse", vec3(material->getDiffuse()->x, material->getDiffuse()->y, material->getDiffuse()->z));
+				coreShader.setVec3("materialSpecular", vec3(material->getSpecular()->x, material->getSpecular()->y, material->getSpecular()->z));
+				coreShader.setFloat("materialShininess", material->getShininess());
+
 				glm::mat4 model(1.0f);
 				model = glm::scale(model, object->getScale());
 				model = glm::rotate(model, glm::radians(object->getRotationAngle()), object->getRotation());
