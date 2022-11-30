@@ -84,7 +84,7 @@ int main()
 	vector<NewMesh *> meshs;
 	meshs.push_back(NewObjectReader::read("./trabGA/assets/mesa01.obj"));
 	meshs.push_back(NewObjectReader::read("./objects/pista.obj"));
-
+	meshs.push_back(NewObjectReader::read("./trabGA/assets/pokemon/Pikachu.obj"));
 	// vector<vec3*> translatePoints;
 
 	for (NewMesh *mesh : meshs)
@@ -236,6 +236,7 @@ int main()
 		coreShader.setVec3("viewPos", vec3(camX, camY, camZ));
 
 		glm::mat4 model(1.0f);
+		model = glm::scale(model, glm::vec3(3.0f));
 		model = glm::rotate(model, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		coreShader.setMatrix4fv("model", model);
