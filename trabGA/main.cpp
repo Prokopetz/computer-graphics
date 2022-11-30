@@ -35,6 +35,80 @@ glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 const GLint WIDTH = 1920, HEIGHT = 1080;
 
+void createBuffersForObject(NewObject *object, Shader &shader)
+{
+	for (NewGroup *group : object->getMesh()->getGroups())
+	{
+		NewMaterial *material = object->getMesh()->getMaterial(group->getMaterial());
+		shader.LoadTexture(strdup(material->getTexture().c_str()), "texture1", group->getName());
+		shader.setVec3("materialAmbient", vec3(material->getAmbient()->x, material->getAmbient()->y, material->getAmbient()->z));
+		shader.setVec3("materialDiffuse", vec3(material->getDiffuse()->x, material->getDiffuse()->y, material->getDiffuse()->z));
+		shader.setVec3("materialSpecular", vec3(material->getSpecular()->x, material->getSpecular()->y, material->getSpecular()->z));
+		shader.setFloat("materialShininess", material->getShininess());
+
+		vector<float> vertices;
+		vector<float> normais;
+		vector<float> textures;
+
+		for (NewFace *face : group->getFaces())
+		{
+			for (int verticeID : face->getVertices())
+			{
+				glm::vec3 *vertice = object->getMesh()->vertice(verticeID - 1);
+				vertices.push_back(vertice->x);
+				vertices.push_back(vertice->y);
+				vertices.push_back(vertice->z);
+
+				group->increaseNumVertices();
+			}
+
+			for (int normalID : face->getNormais())
+			{
+				glm::vec3 *normal = object->getMesh()->normal(normalID - 1);
+				normais.push_back(normal->x);
+				normais.push_back(normal->y);
+				normais.push_back(normal->z);
+			}
+
+			for (int textureID : face->getTextures())
+			{
+				glm::vec2 *texture = object->getMesh()->texture(textureID - 1);
+				textures.push_back(texture->x);
+				textures.push_back(texture->y);
+			}
+		}
+
+		GLuint VBOvertices, VBOnormais, VBOtextures, VAO;
+		glGenVertexArrays(1, &VAO);
+		glGenBuffers(1, &VBOvertices);
+		glGenBuffers(1, &VBOnormais);
+		glGenBuffers(1, &VBOtextures);
+
+		glBindVertexArray(VAO);
+
+		glBindBuffer(GL_ARRAY_BUFFER, VBOvertices);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid *)0);
+		glEnableVertexAttribArray(0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, VBOnormais);
+		glBufferData(GL_ARRAY_BUFFER, normais.size() * sizeof(float), normais.data(), GL_STATIC_DRAW);
+
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid *)0);
+		glEnableVertexAttribArray(1);
+
+		glBindBuffer(GL_ARRAY_BUFFER, VBOtextures);
+		glBufferData(GL_ARRAY_BUFFER, textures.size() * sizeof(float), textures.data(), GL_STATIC_DRAW);
+
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid *)0);
+		glEnableVertexAttribArray(2);
+
+		group->setVAO(&VAO);
+		glBindVertexArray(0);
+	}
+}
+
 int main()
 {
 	GLFWwindow *window;
@@ -88,8 +162,7 @@ int main()
 	coreShader.setFloat("fogNear", 50.0f);
 	coreShader.setFloat("fogFar", 150.0f);
 
-
-	NewObject* ground = new NewObject("./trabGA/assets/ground/ground.obj");
+	NewObject *ground = new NewObject("./trabGA/assets/ground/ground.obj");
 	ground->setTranslate(glm::vec3(-40.0f, -5.0f, -40.0f));
 	ground->setScale(glm::vec3(2.0f));
 	ground->setRotation(glm::vec3(0.0f, 1.0f, 0.0f));
@@ -101,77 +174,7 @@ int main()
 
 	for (NewObject *object : objects)
 	{
-		for (NewGroup *group : object->getMesh()->getGroups())
-		{
-
-			NewMaterial *material = object->getMesh()->getMaterial(group->getMaterial());
-			coreShader.LoadTexture(strdup(material->getTexture().c_str()), "texture1", group->getName());
-			coreShader.setVec3("materialAmbient", vec3(material->getAmbient()->x, material->getAmbient()->y, material->getAmbient()->z));
-			coreShader.setVec3("materialDiffuse", vec3(material->getDiffuse()->x, material->getDiffuse()->y, material->getDiffuse()->z));
-			coreShader.setVec3("materialSpecular", vec3(material->getSpecular()->x, material->getSpecular()->y, material->getSpecular()->z));
-			coreShader.setFloat("materialShininess", material->getShininess());
-
-			vector<float> vertices;
-			vector<float> normais;
-			vector<float> textures;
-
-			for (NewFace *face : group->getFaces())
-			{
-				for (int verticeID : face->getVertices())
-				{
-					glm::vec3 *vertice = object->getMesh()->vertice(verticeID - 1);
-					vertices.push_back(vertice->x);
-					vertices.push_back(vertice->y);
-					vertices.push_back(vertice->z);
-
-					group->increaseNumVertices();
-				}
-
-				for (int normalID : face->getNormais())
-				{
-					glm::vec3 *normal = object->getMesh()->normal(normalID - 1);
-					normais.push_back(normal->x);
-					normais.push_back(normal->y);
-					normais.push_back(normal->z);
-				}
-
-				for (int textureID : face->getTextures())
-				{
-					glm::vec2 *texture = object->getMesh()->texture(textureID - 1);
-					textures.push_back(texture->x);
-					textures.push_back(texture->y);
-				}
-			}
-
-			GLuint VBOvertices, VBOnormais, VBOtextures, VAO;
-			glGenVertexArrays(1, &VAO);
-			glGenBuffers(1, &VBOvertices);
-			glGenBuffers(1, &VBOnormais);
-			glGenBuffers(1, &VBOtextures);
-
-			glBindVertexArray(VAO);
-
-			glBindBuffer(GL_ARRAY_BUFFER, VBOvertices);
-			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid *)0);
-			glEnableVertexAttribArray(0);
-
-			glBindBuffer(GL_ARRAY_BUFFER, VBOnormais);
-			glBufferData(GL_ARRAY_BUFFER, normais.size() * sizeof(float), normais.data(), GL_STATIC_DRAW);
-
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid *)0);
-			glEnableVertexAttribArray(1);
-
-			glBindBuffer(GL_ARRAY_BUFFER, VBOtextures);
-			glBufferData(GL_ARRAY_BUFFER, textures.size() * sizeof(float), textures.data(), GL_STATIC_DRAW);
-
-			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid *)0);
-			glEnableVertexAttribArray(2);
-
-			group->setVAO(&VAO);
-			glBindVertexArray(0);
-		}
+		createBuffersForObject(object, coreShader);
 	}
 
 	float camX = 1.0f;
@@ -230,10 +233,13 @@ int main()
 
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
-			NewObject* bullet = new NewObject("./trabGA/assets/pokemon/Pikachu.obj");
-			// bullet->setVelocity(1.0f);
-			// bullet->setIsBullet(true);
+			NewObject *bullet = new NewObject("./trabGA/assets/pokemon/Pikachu.obj");
+			bullet->setTranslate(cameraPosition);
+			bullet->setVelocity(0.1f);
+			bullet->setIsBullet(true);
+			bullet->setDirection(cameraFront);
 			objects.push_back(bullet);
+			createBuffersForObject(bullet, coreShader);
 		}
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -261,10 +267,13 @@ int main()
 				model = glm::scale(model, object->getScale());
 				model = glm::rotate(model, glm::radians(object->getRotationAngle()), object->getRotation());
 
-				if(object->getIsBullet()) {
-					glm::vec3 direction = cameraFront;
-					model = glm::translate(model, object->getVelocity() * direction + object->getTranslate());
-				} else {
+				if (object->getIsBullet())
+				{
+					model = glm::translate(model, object->getVelocity() * object->getDirection() + object->getTranslate());
+					object->setTranslate(object->getVelocity() * object->getDirection() + object->getTranslate());
+				}
+				else
+				{
 					model = glm::translate(model, object->getTranslate());
 				}
 
