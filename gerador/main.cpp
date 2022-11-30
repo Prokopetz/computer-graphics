@@ -67,7 +67,6 @@ GLuint vaoBsplineOut, vboBsplineOut;
 vector<float> controlPoints, bspline, bsplineIn, bsplineOut;
 double xLastPos = 0, yLastPos = 0;
 
-
 int initGLFW()
 {
 	glfwInit();
@@ -123,7 +122,7 @@ int openGLSetup()
 
 int systemSetup()
 {
-	coreShader = Shader("./gerador/Shaders/Core/core.vert", "./gerador/Shaders/Core/core.frag");
+	coreShader = Shader("./gerador/Shaders/Core/vertex.shader", "./gerador/Shaders/Core/fragment.shader");
 	coreShader.Use();
 
 	glm::mat4 proj = glm::ortho(0.0f, 600.0f, 600.0f, 0.0f, -1.0f, 1.0f);
@@ -262,16 +261,16 @@ void update_bspline()
 			float kPow2 = pow(k, 2);
 
 			float x = calculateBsplinePoint(k, kPow3, kPow2,
-																				controlPoints[(i + 0) % size],
-																				controlPoints[(i + 3) % size],
-																				controlPoints[(i + 6) % size],
-																				controlPoints[(i + 9) % size]);
+																			controlPoints[(i + 0) % size],
+																			controlPoints[(i + 3) % size],
+																			controlPoints[(i + 6) % size],
+																			controlPoints[(i + 9) % size]);
 
 			float y = calculateBsplinePoint(k, kPow3, kPow2,
-																				controlPoints[(i + 0 + 1) % size],
-																				controlPoints[(i + 3 + 1) % size],
-																				controlPoints[(i + 6 + 1) % size],
-																				controlPoints[(i + 9 + 1) % size]);
+																			controlPoints[(i + 0 + 1) % size],
+																			controlPoints[(i + 3 + 1) % size],
+																			controlPoints[(i + 6 + 1) % size],
+																			controlPoints[(i + 9 + 1) % size]);
 
 			float z = 0;
 
@@ -395,9 +394,9 @@ void writeObj()
 
 	obj << "vn 0.0 1.0 0.0" << endl;
 	obj << "vt 0.0 0.0" << endl;
-	obj << "vt 0.0 1.0" << endl;
-	obj << "vt 1.0 0.0" << endl;
-	obj << "vt 1.0 1.0" << endl;
+	obj << "vt 0.0 0.5" << endl;
+	obj << "vt 0.5 0.0" << endl;
+	obj << "vt 0.5 0.5" << endl;
 
 	int size = bsplineIn.size();
 	int numberOfVertices = size / 3;
