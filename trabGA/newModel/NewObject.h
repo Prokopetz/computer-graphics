@@ -20,7 +20,10 @@ private:
 	glm::vec3 scale = glm::vec3(1.0f);
 	glm::vec3 translate =  glm::vec3(0.0f);
 	glm::vec3 rotation = glm::vec3(0.0f, 1.0f, 0.0f);
+	float velocity =  0.0f;
 	float rotationAngle = 0.0f;
+  bool isBullet = false;
+  bool hasCollision = false;
 
 public:
 	NewObject(string meshPath);
@@ -38,12 +41,24 @@ public:
     return translate;
   };
 
+  float getVelocity() {
+    return velocity;
+  };
+
 	glm::vec3 getRotation() {
     return rotation;
   };
 
 	float getRotationAngle() {
     return rotationAngle;
+  };
+
+  bool getHasCollision() {
+    return hasCollision;
+  };
+
+  bool getIsBullet() {
+    return isBullet;
   };
 
 	void setScale(glm::vec3 newScale) {
@@ -54,11 +69,23 @@ public:
     this->translate = newTranslate;
   };
 
+	void setVelocity(float velocity) {
+    this->velocity = velocity;
+  };
+
 	void setRotation(glm::vec3 newRotation) {
     this->rotation = newRotation;
   };
 
 	void setRotationAngle(float rotationAngle) {
     this->rotationAngle = rotationAngle;
+  };
+
+  void setHasCollision(bool hasCollision) {
+    this->hasCollision = hasCollision;
+  };
+
+  void setIsBullet(bool isBullet) {
+    this->isBullet = isBullet;
   };
 };

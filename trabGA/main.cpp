@@ -96,8 +96,8 @@ int main()
 	ground->setRotationAngle(180.0f);
 	objects.push_back(ground);
 
-	 objects.push_back(new NewObject("./objects/pista.obj"));
-	objects.push_back(new NewObject("./trabGA/assets/pokemon/Pikachu.obj"));
+	objects.push_back(new NewObject("./objects/pista.obj"));
+	// objects.push_back(new NewObject("./trabGA/assets/pokemon/Pikachu.obj"));
 
 	for (NewObject *object : objects)
 	{
@@ -228,6 +228,14 @@ int main()
 			cameraFront = glm::normalize(direction);
 		}
 
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		{
+			NewObject* bullet = new NewObject("./trabGA/assets/pokemon/Pikachu.obj");
+			// bullet->setVelocity(1.0f);
+			// bullet->setIsBullet(true);
+			objects.push_back(bullet);
+		}
+
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -252,7 +260,13 @@ int main()
 				glm::mat4 model(1.0f);
 				model = glm::scale(model, object->getScale());
 				model = glm::rotate(model, glm::radians(object->getRotationAngle()), object->getRotation());
-				model = glm::translate(model, object->getTranslate());
+
+				if(object->getIsBullet()) {
+					glm::vec3 direction = cameraFront;
+					model = glm::translate(model, object->getVelocity() * direction + object->getTranslate());
+				} else {
+					model = glm::translate(model, object->getTranslate());
+				}
 
 				coreShader.setMatrix4fv("model", model);
 
