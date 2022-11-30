@@ -26,11 +26,11 @@ void finish();
 void writeMaterial();
 void writeObj();
 void toFile();
-void mouse_button_callback(GLFWwindow *window, int button, int action, int mods);
+void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
 void update_bspline();
 void createBuffers();
-void update_bspline_in_ex();
-float calculate_bspline_point(float t, float t_pow_3, float t_pow_2, float p1, float p2, float p3, float p4);
+void updateBsplineInOut();
+float calculateBsplinePoint(float t, float t_pow_3, float t_pow_2, float p1, float p2, float p3, float p4);
 
 int main()
 {
@@ -65,6 +65,8 @@ GLuint vaoBsplineIn, vboBsplineIn;
 GLuint vaoBsplineOut, vboBsplineOut;
 
 vector<float> controlPoints, bspline, bsplineIn, bsplineOut;
+double xLastPos = 0, yLastPos = 0;
+
 
 int initGLFW()
 {
@@ -79,7 +81,7 @@ int initGLFW()
 	window = glfwCreateWindow(WIDTH, HEIGHT, "Gerador", nullptr, nullptr);
 
 	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
-	glfwSetMouseButtonCallback(window, mouse_button_callback);
+	glfwSetMouseButtonCallback(window, mouseButtonCallback);
 
 	if (window == nullptr)
 	{
@@ -212,23 +214,21 @@ void run()
 	}
 }
 
-double x_last_pos = 0, y_last_pos = 0;
-
-void mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
+void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
 {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 	{
 		double x_current_pos, y_current_pos;
 		glfwGetCursorPos(window, &x_current_pos, &y_current_pos);
 
-		if (x_last_pos == x_current_pos && y_last_pos == y_current_pos)
+		if (xLastPos == x_current_pos && yLastPos == y_current_pos)
 		{
 			// just to not repeat
 			return;
 		}
 
-		x_last_pos = x_current_pos;
-		y_last_pos = y_current_pos;
+		xLastPos = x_current_pos;
+		yLastPos = y_current_pos;
 
 		controlPoints.push_back(x_current_pos);
 		controlPoints.push_back(y_current_pos);
@@ -243,7 +243,7 @@ void mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
 		if (controlPoints.size() > 3)
 		{
 			update_bspline();
-			update_bspline_in_ex();
+			updateBsplineInOut();
 		}
 	}
 }
@@ -253,7 +253,7 @@ void update_bspline()
 	bspline.clear();
 	int size = controlPoints.size();
 
-	for (int i = 0; i < size; i += 3)
+	for (int i = 0; i < size + 1; i += 3)
 	{
 		for (float k = 0; k < 1; k += 0.01f)
 		{
@@ -261,13 +261,13 @@ void update_bspline()
 			float kPow3 = pow(k, 3);
 			float kPow2 = pow(k, 2);
 
-			float x = calculate_bspline_point(k, kPow3, kPow2,
+			float x = calculateBsplinePoint(k, kPow3, kPow2,
 																				controlPoints[(i + 0) % size],
 																				controlPoints[(i + 3) % size],
 																				controlPoints[(i + 6) % size],
 																				controlPoints[(i + 9) % size]);
 
-			float y = calculate_bspline_point(k, kPow3, kPow2,
+			float y = calculateBsplinePoint(k, kPow3, kPow2,
 																				controlPoints[(i + 0 + 1) % size],
 																				controlPoints[(i + 3 + 1) % size],
 																				controlPoints[(i + 6 + 1) % size],
@@ -288,7 +288,7 @@ void update_bspline()
 	glEnableVertexAttribArray(0);
 }
 
-float calculate_bspline_point(float k, float kPow3, float kPow2, float p1, float p2, float p3, float p4)
+float calculateBsplinePoint(float k, float kPow3, float kPow2, float p1, float p2, float p3, float p4)
 {
 	return (
 			(
@@ -299,7 +299,7 @@ float calculate_bspline_point(float k, float kPow3, float kPow2, float p1, float
 			6.0f);
 }
 
-void update_bspline_in_ex()
+void updateBsplineInOut()
 {
 	bsplineOut.clear();
 	bsplineIn.clear();
@@ -384,6 +384,7 @@ void writeMaterial()
 
 void writeObj()
 {
+	float scale = 0.05f;
 	ofstream obj("./objects/pista.obj");
 	obj << "mtllib "
 			<< "Objects/pista.mtl" << endl;
@@ -402,11 +403,11 @@ void writeObj()
 	int numberOfVertices = size / 3;
 	for (int i = 0; i < size; i += 3)
 	{
-		obj << "v " << (bsplineIn[i]) << " " << bsplineIn[i + 2] << " " << (bsplineIn[i + 1]) << endl;
+		obj << "v " << (bsplineIn[i] * scale) << " " << bsplineIn[i + 2] * scale << " " << (bsplineIn[i + 1] * scale) << endl;
 	}
 	for (int i = 0; i < size; i += 3)
 	{
-		obj << "v " << (bsplineOut[i]) << " " << bsplineOut[i + 2] << " " << (bsplineOut[i + 1]) << endl;
+		obj << "v " << (bsplineOut[i] * scale) << " " << bsplineOut[i + 2] * scale << " " << (bsplineOut[i + 1] * scale) << endl;
 	}
 	for (int i = 1; i <= numberOfVertices - 3; i++)
 	{
